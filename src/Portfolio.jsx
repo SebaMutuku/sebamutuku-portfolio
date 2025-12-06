@@ -14,7 +14,6 @@ export default function DeveloperPortfolio() {
     'Full-Stack Developer',
     'Backend Developer',
     'Frontend Developer',
-    'Data Engineer',
     'GIS Developer'
   ];
 
@@ -51,11 +50,11 @@ export default function DeveloperPortfolio() {
   };
 
   const techStack = {
-    frontend: ['React', 'JavaScript', 'HTML5', 'CSS3', 'Tailwind CSS', 'Leaflet', 'Plotly'],
-    backend: ['Python', 'Node.js', 'Django', 'Flask', 'REST APIs', 'FastAPI'],
+    frontend: ['React', 'JavaScript', 'HTML5', 'CSS3', 'Tailwind CSS', 'OpenLayers', 'Plotly'],
+    backend: ['Python', 'Node.js', 'Django', 'REST APIs', 'FastAPI'],
     database: ['PostgreSQL', 'MongoDB', 'SQL', 'PostGIS', 'Spatial Databases'],
     tools: ['Git', 'Docker', 'VS Code', 'Postman', 'GitHub Actions'],
-    cloud: ['AWS', 'Google Cloud', 'ArcGIS Online', 'Heroku'],
+    cloud: ['AWS', 'Google Cloud', 'ArcGIS Online'],
     specialization: ['GDAL', 'Google Earth Engine', 'Machine Learning', 'Data Pipelines', 'Web Mapping']
   };
 
@@ -70,14 +69,14 @@ export default function DeveloperPortfolio() {
     {
       name: 'FoTIMS & PDMIS Systems',
       description: 'Enterprise geospatial monitoring systems for government field activities. Developed data integration pipelines, RESTful APIs, and interactive dashboards.',
-      tech: ['Django', 'PostgreSQL', 'React', 'Leaflet', 'Data Integration'],
+      tech: ['Django', 'PostgreSQL', 'React', 'OpenLayers', 'Data Integration'],
       category: 'Backend/Data',
       icon: <Database className="w-6 h-6" />
     },
     {
       name: 'Wheels for Climate Dashboard',
       description: 'Interactive web mapping application visualizing cycling routes from Kenya to Brazil for COP30. Features real-time tracking, route analytics, and social engagement.',
-      tech: ['React', 'Leaflet', 'JavaScript', 'Plotly', 'REST API'],
+      tech: ['React', 'OpenLayers', 'JavaScript', 'Plotly', 'REST API'],
       category: 'Frontend/Mapping',
       icon: <Globe className="w-6 h-6" />
     },
@@ -232,7 +231,7 @@ export default function DeveloperPortfolio() {
             </span>
           </div>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
-            Full-stack developer with 7+ years of experience building scalable web applications, 
+            Full-stack developer with 5+ years of experience building scalable web applications, 
             data-driven systems, and geospatial solutions. Passionate about clean code, innovative 
             solutions, and creating impactful software.
           </p>
@@ -264,20 +263,19 @@ export default function DeveloperPortfolio() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h3 className="text-2xl font-bold text-emerald-400 mb-4">Software Developer & Problem Solver</h3>
-              <p className="text-gray-300 mb-4 leading-relaxed">
+              <p className="text-gray-300 mb-4 leading-relaxed text-justify">
                 I'm a versatile full-stack developer specializing in building robust backend systems, 
                 intuitive frontend interfaces, and data-driven applications. With a strong foundation 
                 in both computer science and geoinformation technology, I bring a unique perspective 
                 to software development.
               </p>
-              <p className="text-gray-300 mb-4 leading-relaxed">
+              <p className="text-gray-300 mb-4 leading-relaxed text-justify">
                 My expertise spans from architecting scalable APIs and databases to crafting responsive 
                 React applications. I'm particularly passionate about integrating spatial data, machine 
                 learning, and modern web technologies to solve complex real-world problems.
               </p>
-              <p className="text-gray-300 leading-relaxed">
-                Currently pursuing my MSc in Data Science while leading development teams at the Ministry 
-                of Environment, where I build systems that support environmental monitoring and national 
+              <p className="text-gray-300 leading-relaxed text-justify">
+                Currently pursuing my MSc in Data Science while leading development teams at DRSRS, where I build systems that support environmental monitoring and national 
                 initiatives.
               </p>
             </div>
@@ -287,11 +285,11 @@ export default function DeveloperPortfolio() {
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    7+ years of development experience
+                    5+ years of development experience
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    Full-Stack Software Development Certified
+                    Full-Stack Software Development
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
@@ -341,7 +339,7 @@ export default function DeveloperPortfolio() {
           <p className="text-gray-400 text-center mb-12 text-lg">
             A collection of my recent work showcasing full-stack development and technical expertise
           </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-justify">
             {projects.map((project, index) => (
               <div 
                 key={index} 
@@ -498,7 +496,7 @@ export default function DeveloperPortfolio() {
           </div>
           <div className="mt-8 flex items-center justify-center gap-2 text-gray-400">
             <MapPin className="w-5 h-5" />
-            <span>Kathiani, Machakos, Kenya</span>
+            <span>Nairobi, Kenya</span>
           </div>
         </div>
       </section>
