@@ -1,22 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { Mail, Phone, Github, MapPin, Menu, X, Code, Database, Globe, Terminal, Zap, Layers, Server, Smartphone } from 'lucide-react';
-import Logo from './assets/logo.png';
+import React, { useState, useEffect } from "react";
+import {
+  Mail,
+  Phone,
+  Github,
+  MapPin,
+  Menu,
+  X,
+  Code,
+  Database,
+  Terminal,
+  Zap,
+  Layers,
+  Server,
+  Smartphone,
+  Computer,
+  Syringe,
+  Book,
+} from "lucide-react";
+import { getExperienceYears } from "./utils/utils";
 
 export default function DeveloperPortfolio() {
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [displayText, setDisplayText] = useState('');
+  const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
   const [typingSpeed, setTypingSpeed] = useState(150);
+  const years = getExperienceYears(2018, 4);
 
   const roles = [
-    'Full-Stack Developer',
-    'Backend Developer',
-    'Frontend Developer',
-    'GIS Developer'
+    "Android Developer",
+    "Backend Developer",
+    "HAPI FHIR SDK developer",
+    "Corebanking Applications Developer",
+    "DevOps Enthusiast",
+    "Tech Team Lead",
+    "Open Source Contributor",
   ];
-
   useEffect(() => {
     let timer;
     const handleType = () => {
@@ -24,16 +44,14 @@ export default function DeveloperPortfolio() {
       const fullText = roles[i];
 
       setDisplayText(
-        isDeleting
-          ? fullText.substring(0, displayText.length - 1)
-          : fullText.substring(0, displayText.length + 1)
+        isDeleting ? fullText.substring(0, displayText.length - 1) : fullText.substring(0, displayText.length + 1)
       );
 
       setTypingSpeed(isDeleting ? 50 : 150);
 
       if (!isDeleting && displayText === fullText) {
         setTimeout(() => setIsDeleting(true), 2000);
-      } else if (isDeleting && displayText === '') {
+      } else if (isDeleting && displayText === "") {
         setIsDeleting(false);
         setLoopNum(loopNum + 1);
       }
@@ -46,111 +64,285 @@ export default function DeveloperPortfolio() {
   const scrollToSection = (section) => {
     setActiveSection(section);
     setMobileMenuOpen(false);
-    document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
   };
 
   const techStack = {
-    frontend: ['React', 'JavaScript', 'HTML5', 'CSS3', 'Tailwind CSS', 'OpenLayers', 'Plotly'],
-    backend: ['Python', 'Node.js', 'Django', 'REST APIs', 'FastAPI'],
-    database: ['PostgreSQL', 'MongoDB', 'SQL', 'PostGIS', 'Spatial Databases'],
-    tools: ['Git', 'Docker', 'VS Code', 'Postman', 'GitHub Actions'],
-    cloud: ['AWS', 'Google Cloud', 'ArcGIS Online'],
-    specialization: ['GDAL', 'Google Earth Engine', 'Machine Learning', 'Data Pipelines', 'Web Mapping']
+    android: [
+      "React Native",
+      "Java",
+      "Kotlin",
+      "Flutter",
+      "Live Data",
+      "Dagger and Hilt",
+      "Jetpack Compose",
+      "Retriofit",
+      "ViewModel",
+      "Redux",
+      "React Navigation",
+    ],
+    backend: [
+      "Java",
+      "Python",
+      "Kotlin",
+      "Django",
+      "REST APIs",
+      "Spring and Springboot",
+      "Spring Security",
+      "Ktor and Koin",
+      "Scala with Play Framework",
+      "Docker",
+      "Kubernetes",
+      "Redis",
+      "RabbitMQ",
+      "Apache Kafka",
+    ],
+    database: [
+      "PostgreSQL",
+      "MongoDB",
+      "CockroachDB",
+      "TimescaleDB",
+      "AWS Aurora",
+      "SQLite",
+      "Room Database",
+      "Realm DB",
+      "Firebase Realtime Database",
+      "Firebase Firestore",
+      "Oracle DB",
+      "MySQL",
+      "SQL Server",
+      "Redis",
+    ],
+    cicd: [
+      "Git",
+      "Grafana Loki",
+      "Prometheus",
+      "Terraform",
+      "Ansible",
+      "GitHub Actions",
+      "HashiCorp Vault",
+      "Istio",
+      "F5",
+      "SonarQube",
+      "WS02",
+    ],
+    cloud: ["AWS", "Google Cloud", "Azure", "Openshift", "Digital Ocean", "Heroku", "Vercel", "Netlify"],
+    specialization: ["T24", "Hapi FHIR SDK", "Integrations", "Data Pipelines", "Linux Administration"],
+    tools: [
+      "GraphQL (Apollo Server 4)",
+      "gRPC",
+      "tRPC",
+      "WebSocket",
+      "Server-Sent Events",
+      "Apache Kafka",
+      "RabbitMQ",
+      "WebAssembly",
+      "Cloudflare Workers",
+      "Vercel Edge Functions",
+    ],
+    networking: [
+      "C++",
+      "Socket Programming",
+      "Network Protocols",
+      "TCP/IP",
+      "UDP",
+      "HTTP/HTTPS",
+      "DNS",
+      "DHCP",
+      "Multicast",
+      "Routing Protocols",
+      "Multiplexing",
+      "Network Security",
+    ],
   };
 
   const projects = [
     {
-      name: 'JazaMiti Verification Platform',
-      description: 'Full-stack mobile and web platform for tree planting verification using satellite imagery and geolocation. Built with React Native, Python backend, and integrated real-time mapping.',
-      tech: ['React Native', 'Python', 'PostgreSQL', 'REST API', 'Satellite Data'],
-      category: 'Full-Stack',
-      icon: <Smartphone className="w-6 h-6" />
+      name: "Agency Banking solution",
+      description:
+        "Enhanced an existing agency banking platform by integrating new features, improving security protocols, and optimizing performance for high transaction volumes.",
+      tech: [
+        "Android",
+        "Java",
+        "Spring",
+        "REST API",
+        "Oracle",
+        "T24",
+        "Openshift",
+        "Kubernetes",
+        "Docker",
+        "Integration",
+      ],
+      category: "Financial/Android/Backend",
+      icon: <Smartphone className="w-6 h-6" />,
     },
     {
-      name: 'FoTIMS & PDMIS Systems',
-      description: 'Enterprise geospatial monitoring systems for government field activities. Developed data integration pipelines, RESTful APIs, and interactive dashboards.',
-      tech: ['Django', 'PostgreSQL', 'React', 'OpenLayers', 'Data Integration'],
-      category: 'Backend/Data',
-      icon: <Database className="w-6 h-6" />
+      name: "Bancassurance Platform",
+      description:
+        "Developed a comprehensive bancassurance platform that seamlessly integrates banking and insurance services, providing users with a unified experience for managing their financial and insurance needs.",
+      tech: [
+        "Java",
+        "Spring Boot",
+        "Kotlin",
+        "REST API",
+        "PostgreSQL",
+        "Docker",
+        "Kubernetes",
+        "T24",
+        "Integration",
+        "Insurance",
+        "Oracle",
+      ],
+      category: "Insurance/Financial/Backend",
+      icon: <Database className="w-6 h-6" />,
     },
     {
-      name: 'Wheels for Climate Dashboard',
-      description: 'Interactive web mapping application visualizing cycling routes from Kenya to Brazil for COP30. Features real-time tracking, route analytics, and social engagement.',
-      tech: ['React', 'OpenLayers', 'JavaScript', 'Plotly', 'REST API'],
-      category: 'Frontend/Mapping',
-      icon: <Globe className="w-6 h-6" />
+      name: "ATM card processing System",
+      description:
+        "Built a robust ATM card processing system that handles card issuance, activation, and transaction processing with high security and reliability.",
+      tech: [
+        "Java",
+        "Spring",
+        "Kotlin",
+        "REST API",
+        "PostgreSQL",
+        "Docker",
+        "Kubernetes",
+        "T24",
+        "Integration",
+        "Card Services",
+        "ISO 8583",
+      ],
+      category: "Financial/Backend/Card Services",
+      icon: <Computer className="w-6 h-6" />,
     },
     {
-      name: 'Vibrama GIS Platform',
-      description: 'Custom GIS-enabled platform for environmental and spatial data analysis. Built complete backend infrastructure with spatial queries and data visualization.',
-      tech: ['Python', 'PostGIS', 'React', 'GDAL', 'Web Services'],
-      category: 'Full-Stack',
-      icon: <Layers className="w-6 h-6" />
+      name: "WHO ANC Mobile Application",
+      description:
+        "Developed a mobile application for antenatal care based on WHO guidelines. The app provides healthcare workers with tools for patient management, data collection, and health education.",
+      tech: [
+        "Kotlin",
+        "Jetpack Compose",
+        "Live Data",
+        "Android",
+        "JavaScript",
+        "FHIR",
+        "Google FHIR SDK",
+        "Firebase",
+        "REST API",
+        "WHO Guidelines",
+      ],
+      category: "Android/Health/FHIR",
+      icon: <Syringe className="w-6 h-6" />,
     },
     {
-      name: 'Real-Time Monitoring Dashboards',
-      description: 'Developed multiple interactive dashboards for infrastructure and environmental monitoring. Integrated with various data sources and APIs.',
-      tech: ['React', 'Power BI', 'Python', 'WebSockets', 'Chart.js'],
-      category: 'Frontend',
-      icon: <Zap className="w-6 h-6" />
+      name: "WHO Child Immunization App",
+      description:
+        "Created a mobile application to support child immunization programs based on WHO guidelines. The app assists healthcare workers in tracking immunization schedules, recording vaccinations, and educating parents.",
+      tech: [
+        "Kotlin",
+        "Jetpack Compose",
+        "Live Data",
+        "Android",
+        "JavaScript",
+        "FHIR",
+        "Google FHIR SDK",
+        "Firebase",
+        "WHO Guidelines",
+      ],
+      category: "Android/Health/FHIR",
+      icon: <Syringe className="w-6 h-6" />,
     },
     {
-      name: 'Geospatial API Services',
-      description: 'Built and maintained RESTful APIs for geospatial data access, processing, and analysis. Handles millions of spatial records with optimized queries.',
-      tech: ['Python', 'FastAPI', 'PostgreSQL', 'Docker', 'Redis'],
-      category: 'Backend',
-      icon: <Server className="w-6 h-6" />
-    }
+      name: "Checkpoint Ordering System",
+      description:
+        "Built a backend system for managing checkpoint orders, including order placement, tracking, and fulfillment processes for KCB Bank Tanzania",
+      tech: [
+        "Java",
+        "Spring Boot",
+        "REST API",
+        "PostgreSQL",
+        "Docker",
+        "Kubernetes",
+        "T24",
+        "Integration",
+        "Event-Driven Architecture",
+        "RabbitMQ",
+        "Microservices",
+      ],
+      category: "Fiancial/Backend",
+      icon: <Book className="w-6 h-6" />,
+    },
   ];
 
   const experience = [
     {
-      title: 'Backend Developer & Data Officer',
-      company: 'Ministry of Environment (DRSRS)',
-      period: '2022 – Present',
-      description: 'Lead developer for national-level environmental monitoring systems supporting the 15 Billion Tree Program.',
+      title: "Senior Applications Developer",
+      company: "KCB Bank Group",
+      period: "Oct 2024 – Present",
+      description:
+        "Lead developer for projects involving backend systems, API development, and integration with core banking platforms.",
       achievements: [
-        'Architected and deployed scalable backend systems handling millions of spatial records',
-        'Built RESTful APIs and data pipelines for satellite imagery processing and analysis',
-        'Integrated machine learning models for predictive environmental analytics',
-        'Led development team in agile environment, mentoring junior developers',
-        'Implemented CI/CD pipelines and automated testing frameworks'
-      ]
+        "Spearheaded the development of microservices architecture for banking applications",
+        "Integrated multiple third-party services to enhance banking functionalities",
+        "Optimized backend processes leading to a 30% reduction in transaction processing time",
+        "Mentored junior developers and conducted code reviews to ensure high-quality code",
+        "Build insurance and agency banking solutions using T24 core banking system",
+        "Led the migration of legacy systems to modern cloud-based architectures",
+        "Migrated core banking applications to Kubernetes and OpenShift environments",
+        "Implemented CI/CD pipelines using GitHub Actions and Terraform for automated deployments",
+        "Build a modern ATM card processing system integrated with T24",
+        "Build a modern Agency banking solution integrated with T24",
+        "Build a modern Bancassurance platform integrated with Corebanking systems",
+      ],
     },
     {
-      title: 'Frontend Developer',
-      company: 'JNAM Technologies',
-      period: '2020 – 2023',
-      description: 'Designed and developed interactive web applications and real-time monitoring systems.',
+      title: "Senior Software Engineer",
+      company: "ONA Kenya Ltd",
+      period: "Nov 2021 – Sep 2024",
+      description: "Developed HAPI FHIR SDK and built geospatial andoird applications for various clients.",
       achievements: [
-        'Built responsive web applications using React and modern JavaScript',
-        'Developed interactive mapping interfaces with Leaflet and custom visualizations',
-        'Integrated frontend applications with backend APIs and WebSocket connections',
-        'Optimized application performance achieving 90+ Lighthouse scores'
-      ]
+        "Contributed to the HAPI FHIR SDK, enhancing its capabilities for healthcare application development",
+        "Developed Android applications for health data collection and management using FHIR standards",
+        "Implemented geospatial data solutions for clients in the health and infrastructure sectors",
+        "Collaborated with cross-functional teams to deliver high-quality software solutions on time",
+        "Optimized application performance, resulting in a 25% improvement in data processing speeds",
+        "Led the development of a mobile health application used by over 10,000 healthcare workers",
+        "Integrated FHIR-based applications with existing health information systems",
+        "Provided technical training and support to clients on using FHIR standards in their applications",
+        "Enhanced the HAPI FHIR SDK to support new FHIR resources and improve performance",
+      ],
     },
     {
-      title: 'Geospatial Data Officer',
-      company: 'Kenya Power & Lighting Company (KPLC)',
-      period: '2021 – 2022',
-      description: 'Developed geospatial solutions for infrastructure management and expansion projects.',
+      title: "Applications Developer",
+      company: "KCB Bank Group",
+      period: "Sept 2018 – Oct 2021",
+      description: "Developed and maintained banking applications, focusing on backend services and integrations.",
       achievements: [
-        'Built custom tools for infrastructure mapping and spatial analysis',
-        'Developed automated data processing pipelines reducing manual work by 70%',
-        'Created internal dashboards for asset management and planning'
-      ]
+        "Developed backend services for banking applications using Java and Spring Boot",
+        "Integrated applications with core banking systems like T24 and Finacle",
+        "Improved application reliability and performance through code optimization and refactoring",
+        "Collaborated with business analysts to gather requirements and deliver solutions that met client needs",
+        "Build Checkpoint ordering system integrated with T24 for KCB Bank Tanzania",
+        "Build card ordering system integrated with T24 for KCB Bank Kenya",
+        "Enhanced a System to post transactions from external systems to T24 using REST APIs",
+        "Participated in the full software development lifecycle, from design to deployment",
+        "Provided ongoing maintenance and support for existing banking applications",
+      ],
     },
     {
-      title: 'Software Development Trainer',
-      company: 'Riccatti College',
-      period: '2019 – 2021',
-      description: 'Taught programming fundamentals and web development to students.',
+      title: "Software engineer Intern",
+      company: "SimbaTech Solutions Ltd",
+      period: "April 2018 – Sept 2018",
+      description: "Developed Financle software solutions and provided technical support for various projects.",
       achievements: [
-        'Delivered comprehensive courses in Python, JavaScript, and Web Development',
-        'Mentored students in building real-world software projects',
-        'Developed curriculum for GIS-based software applications'
-      ]
-    }
+        "Built modules for Finacle core banking system to enhance functionality",
+        "Provided technical support and troubleshooting for existing applications",
+        "Collaborated with senior developers to learn best practices and improve coding skills",
+        "Participated in code reviews and contributed to team knowledge sharing sessions",
+        "Build Credit card module for Finacle core banking system for Victoria Commercial Bank",
+      ],
+    },
   ];
 
   return (
@@ -165,32 +357,20 @@ export default function DeveloperPortfolio() {
       <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md z-50 border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-2 text-xl font-bold w-40 h-40">
-              <img src={Logo} alt="" />
-              {/* <Terminal className="w-6 h-6 text-emerald-400" />
-              <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                AM_DEV
-              </span> */}
-            </div>
-            
             <div className="hidden md:flex space-x-8">
-              {['home', 'about', 'projects', 'skills', 'experience', 'contact'].map((section) => (
+              {["home", "about", "projects", "skills", "experience", "contact"].map((section) => (
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
                   className={`capitalize hover:text-emerald-400 transition-colors ${
-                    activeSection === section ? 'text-emerald-400' : 'text-gray-300'
-                  }`}
-                >
+                    activeSection === section ? "text-emerald-400" : "text-gray-300"
+                  }`}>
                   {section}
                 </button>
               ))}
             </div>
 
-            <button
-              className="md:hidden"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
+            <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? <X /> : <Menu />}
             </button>
           </div>
@@ -199,12 +379,11 @@ export default function DeveloperPortfolio() {
         {mobileMenuOpen && (
           <div className="md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {['home', 'about', 'projects', 'skills', 'experience', 'contact'].map((section) => (
+              {["home", "about", "projects", "skills", "experience", "contact"].map((section) => (
                 <button
                   key={section}
                   onClick={() => scrollToSection(section)}
-                  className="block w-full text-left px-3 py-2 capitalize hover:bg-slate-800 rounded-md transition-colors"
-                >
+                  className="block w-full text-left px-3 py-2 capitalize hover:bg-slate-800 rounded-md transition-colors">
                   {section}
                 </button>
               ))}
@@ -220,32 +399,58 @@ export default function DeveloperPortfolio() {
             <Code className="w-16 h-16 mx-auto text-emerald-400 animate-bounce" />
           </div>
           <h1 className="text-5xl md:text-7xl font-bold mb-4">
-            Hi, I'm <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
-              Alphonce Mutuku
+            Hi, I'm{" "}
+            <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
+              Sebastian Mutuku
             </span>
           </h1>
           <div className="text-2xl md:text-4xl text-gray-300 mb-8 h-16 flex items-center justify-center">
             <span className="mr-2">I'm a</span>
-            <span className="text-emerald-400 font-semibold border-r-2 border-emerald-400 pr-1">
-              {displayText}
-            </span>
+            <span className="text-emerald-400 font-semibold border-r-2 border-emerald-400 pr-1">{displayText}</span>
           </div>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
-            Full-stack developer with 5+ years of experience building scalable web applications, 
-            data-driven systems, and geospatial solutions. Passionate about clean code, innovative 
-            solutions, and creating impactful software.
-          </p>
+          <div className="text-xl text-gray-400 max-w-3xl mx-auto mb-12 space-y-6">
+            <b>Profession Summary</b>
+            <p>
+              Android and Web Backend Engineer with {years}+ years of experience — an innovative and talented software
+              developer with strong proficiency in Java, Spring, Spring Boot, Kotlin Spring, and Ktor with Koin, and web
+              service creation (SOAP and REST).
+            </p>
+            <p>
+              Experienced in Scala, Python, Django, Kotlin, and cloud-native development. Skilled in Git and Git
+              Workflows, with certifications in CI/CD using GitHub Actions and Microsoft Team Foundation Git.
+            </p>
+
+            <p>
+              Deep knowledge of Docker, Kubernetes, OpenShift, Spring Cloud, and Configuration Server. Proficient in
+              Linux, shell scripting, and deployment on Linux environments.
+            </p>
+
+            <p>
+              Experienced in developing frontends with React Native (Android & iOS), Flutter (cross-platform), and React
+              JS. Worked extensively with financial applications including Temenos and Finacle, and their related
+              systems.
+            </p>
+
+            <p>
+              Specialized in building health-related software using the Google FHIR SDK and FHIR Resources. Experienced
+              with the J-easy Rules Engine for implementing complex business logic.
+            </p>
+
+            <p>
+              Strong focus on scalable backend architecture, DevOps automation, and delivering high-quality,
+              production-ready software.
+            </p>
+          </div>
+
           <div className="flex flex-wrap justify-center gap-4">
-            <button 
-              onClick={() => scrollToSection('projects')}
-              className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 rounded-lg font-semibold transition-all hover:scale-105"
-            >
+            <button
+              onClick={() => scrollToSection("projects")}
+              className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 rounded-lg font-semibold transition-all hover:scale-105">
               View My Work
             </button>
-            <button 
-              onClick={() => scrollToSection('contact')}
-              className="px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg font-semibold transition-all hover:scale-105"
-            >
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg font-semibold transition-all hover:scale-105">
               Get In Touch
             </button>
           </div>
@@ -262,21 +467,27 @@ export default function DeveloperPortfolio() {
           </h2>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h3 className="text-2xl font-bold text-emerald-400 mb-4">Software Developer & Problem Solver</h3>
+              <h3 className="text-2xl font-bold text-emerald-400 mb-4">Software Developer and Solutions provider</h3>
               <p className="text-gray-300 mb-4 leading-relaxed text-justify">
-                I'm a versatile full-stack developer specializing in building robust backend systems, 
-                intuitive frontend interfaces, and data-driven applications. With a strong foundation 
-                in both computer science and geoinformation technology, I bring a unique perspective 
-                to software development.
+                Android and Web Backend Engineer with {years}+ years of experience — an innovative and talented software
+                developer with strong proficiency in Java, Spring, Spring Boot, Kotlin Spring, and Ktor with Koin, and
+                web service creation (SOAP and REST). Experienced in Scala, Python, Django, Kotlin, and cloud-native
+                development. Skilled in Git and Git Workflows, with certifications in CI/CD using GitHub Actions and
+                Microsoft Team Foundation Git. Deep knowledge of Docker, Kubernetes, OpenShift, Spring Cloud, and
+                Configuration Server. Proficient in Linux, shell scripting, and deployment on Linux environments.
+                Experienced in developing frontends with React Native (Android & iOS), Flutter (cross-platform), and
+                React JS. Worked extensively with financial applications including Temenos and Finacle, and their
+                related systems. Specialized in building health-related software using the Google FHIR SDK and FHIR
+                Resources. Experienced with the J-easy Rules Engine for implementing complex business logic. Strong
+                focus on scalable backend architecture, DevOps automation, and delivering high-quality, production-ready
+                software.
               </p>
               <p className="text-gray-300 mb-4 leading-relaxed text-justify">
-                My expertise spans from architecting scalable APIs and databases to crafting responsive 
-                React applications. I'm particularly passionate about integrating spatial data, machine 
-                learning, and modern web technologies to solve complex real-world problems.
+                My expertise spans from architecting scalable APIs, Android Applications and building Financial and
+                Health related solutions.
               </p>
               <p className="text-gray-300 leading-relaxed text-justify">
-                Currently pursuing my MSc in Data Science while leading development teams at DRSRS, where I build systems that support environmental monitoring and national 
-                initiatives.
+                Currently a holders degree in Bachelor of Science, Elctronics major in computer engineering
               </p>
             </div>
             <div className="space-y-4">
@@ -285,40 +496,46 @@ export default function DeveloperPortfolio() {
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    5+ years of development experience
+                    {years}+ years of development experience
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    Full-Stack Software Development
+                    Android and Backend developer
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    Data Science & Machine Learning
+                    Networking Developer with c++
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    BTech in Geoinformation Technology
+                    Deployment & DevOps Enthusiast
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                     Team Lead & Technical Mentor
                   </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                    HAPI FHIR SDK contribution
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                    Corebaking Applications Developer (T24 and Financial)
+                  </li>
                 </ul>
               </div>
               <div className="flex gap-4">
-                <a 
-                  href="mailto:alphonce202@gmail.com"
-                  className="flex-1 flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 px-4 py-3 rounded-lg transition-all"
-                >
+                <a
+                  href="mailto:sebastian.muthiani@gmail.com"
+                  className="flex-1 flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 px-4 py-3 rounded-lg transition-all">
                   <Mail className="w-5 h-5" />
                   Email
                 </a>
-                <a 
-                  href="https://github.com/uhqlA"
+                <a
+                  href="https://github.com/SebaMutuku"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-4 py-3 rounded-lg transition-all"
-                >
+                  className="flex-1 flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-4 py-3 rounded-lg transition-all">
                   <Github className="w-5 h-5" />
                   GitHub
                 </a>
@@ -337,18 +554,16 @@ export default function DeveloperPortfolio() {
             </span>
           </h2>
           <p className="text-gray-400 text-center mb-12 text-lg">
-            A collection of my recent work showcasing full-stack development and technical expertise
+            I have vast experience building financial and health related software solutions. Here are some of my recent
+            projects that showcase my skills and expertise.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-justify">
             {projects.map((project, index) => (
-              <div 
-                key={index} 
-                className="group bg-slate-900/50 border border-slate-800 rounded-lg p-6 hover:border-emerald-500/50 transition-all hover:-translate-y-2"
-              >
+              <div
+                key={index}
+                className="group bg-slate-900/50 border border-slate-800 rounded-lg p-6 hover:border-emerald-500/50 transition-all hover:-translate-y-2">
                 <div className="flex items-start justify-between mb-4">
-                  <div className="p-3 bg-emerald-500/10 rounded-lg text-emerald-400">
-                    {project.icon}
-                  </div>
+                  <div className="p-3 bg-emerald-500/10 rounded-lg text-emerald-400">{project.icon}</div>
                   <span className="px-3 py-1 bg-slate-800 text-emerald-400 rounded-full text-xs">
                     {project.category}
                   </span>
@@ -356,15 +571,10 @@ export default function DeveloperPortfolio() {
                 <h3 className="text-xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">
                   {project.name}
                 </h3>
-                <p className="text-gray-400 mb-4 text-sm leading-relaxed">
-                  {project.description}
-                </p>
+                <p className="text-gray-400 mb-4 text-sm leading-relaxed">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map((tech, i) => (
-                    <span 
-                      key={i} 
-                      className="px-2 py-1 bg-slate-800 text-gray-300 rounded text-xs"
-                    >
+                    <span key={i} className="px-2 py-1 bg-slate-800 text-gray-300 rounded text-xs">
                       {tech}
                     </span>
                   ))}
@@ -385,25 +595,23 @@ export default function DeveloperPortfolio() {
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {Object.entries(techStack).map(([category, skills], index) => (
-              <div 
+              <div
                 key={index}
-                className="bg-slate-900/50 border border-slate-800 rounded-lg p-6 hover:border-emerald-500/50 transition-all"
-              >
+                className="bg-slate-900/50 border border-slate-800 rounded-lg p-6 hover:border-emerald-500/50 transition-all">
                 <h3 className="text-xl font-bold text-emerald-400 mb-4 capitalize flex items-center gap-2">
-                  {category === 'frontend' && <Globe className="w-5 h-5" />}
-                  {category === 'backend' && <Server className="w-5 h-5" />}
-                  {category === 'database' && <Database className="w-5 h-5" />}
-                  {category === 'tools' && <Terminal className="w-5 h-5" />}
-                  {category === 'cloud' && <Layers className="w-5 h-5" />}
-                  {category === 'specialization' && <Zap className="w-5 h-5" />}
+                  {category === "android" && <Smartphone className="w-5 h-5" />}
+                  {category === "backend" && <Server className="w-5 h-5" />}
+                  {category === "database" && <Database className="w-5 h-5" />}
+                  {category === "tools" && <Terminal className="w-5 h-5" />}
+                  {category === "cloud" && <Layers className="w-5 h-5" />}
+                  {category === "specialization" && <Zap className="w-5 h-5" />}
                   {category}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {skills.map((skill, i) => (
-                    <span 
+                    <span
                       key={i}
-                      className="px-3 py-1 bg-slate-800 text-gray-300 rounded-md text-sm hover:bg-emerald-500/20 hover:text-emerald-400 transition-all cursor-default"
-                    >
+                      className="px-3 py-1 bg-slate-800 text-gray-300 rounded-md text-sm hover:bg-emerald-500/20 hover:text-emerald-400 transition-all cursor-default">
                       {skill}
                     </span>
                   ))}
@@ -424,10 +632,9 @@ export default function DeveloperPortfolio() {
           </h2>
           <div className="space-y-8">
             {experience.map((job, index) => (
-              <div 
+              <div
                 key={index}
-                className="bg-slate-900/50 border border-slate-800 rounded-lg p-6 hover:border-emerald-500/50 transition-all"
-              >
+                className="bg-slate-900/50 border border-slate-800 rounded-lg p-6 hover:border-emerald-500/50 transition-all">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
                   <div>
                     <h3 className="text-2xl font-bold text-emerald-400 mb-2">{job.title}</h3>
@@ -455,42 +662,38 @@ export default function DeveloperPortfolio() {
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              Let's Build Something Together
+              Hire me for your next project!
             </span>
           </h2>
           <p className="text-xl text-gray-300 mb-12">
-            I'm always interested in hearing about new projects, opportunities, and collaborations. 
-            Whether you have a question or just want to say hi, feel free to reach out!
+            Want qaulity software development services? Reach out to discuss your project requirements and how I can
+            help bring your ideas to life.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <a 
-              href="mailto:alphonce202@gmail.com"
-              className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 px-8 py-4 rounded-lg font-semibold transition-all hover:scale-105"
-            >
+            <a
+              href="mailto:sebastian.muthiani@gmail.com"
+              className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 px-8 py-4 rounded-lg font-semibold transition-all hover:scale-105">
               <Mail className="w-5 h-5" />
-              alphonce202@gmail.com
+              sebastian.muthiani@gmail.com
             </a>
-            <a 
+            <a
               href="tel:+254719700312"
-              className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-8 py-4 rounded-lg font-semibold transition-all hover:scale-105"
-            >
+              className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-8 py-4 rounded-lg font-semibold transition-all hover:scale-105">
               <Phone className="w-5 h-5" />
-              +254 719 700 312
+              +254 727 538818
             </a>
           </div>
           <div className="flex justify-center gap-6">
-            <a 
-              href="https://github.com/uhqlA"
+            <a
+              href="https://github.com/SebaMutuku"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-all hover:scale-110"
-            >
+              className="p-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-all hover:scale-110">
               <Github className="w-6 h-6" />
             </a>
-            <a 
-              href="mailto:alphonce202@gmail.com"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-all hover:scale-110"
-            >
+            <a
+              href="mailto:sebastian.muthiani@gmail.com"
+              className="p-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-all hover:scale-110">
               <Mail className="w-6 h-6" />
             </a>
           </div>
@@ -504,8 +707,8 @@ export default function DeveloperPortfolio() {
       {/* Footer */}
       <footer className="relative py-8 px-4 sm:px-6 lg:px-8 border-t border-slate-800">
         <div className="max-w-7xl mx-auto text-center text-gray-400 relative z-10">
-          <p className="mb-2">Designed & Built by Alphonce Mutuku</p>
-          <p className="text-sm">© 2025 All rights reserved.</p>
+          <p className="mb-2">Designed & Built by Sebastian Mutuku</p>
+          <p className="text-sm">© {new Date().getFullYear()} All rights reserved.</p>
         </div>
       </footer>
     </div>
