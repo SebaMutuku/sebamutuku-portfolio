@@ -666,7 +666,7 @@ export default function DeveloperPortfolio() {
             </span>
           </h2>
           <p className="text-xl text-gray-300 mb-12">
-            Want qaulity software development services? Reach out to discuss your project requirements and how I can
+            Want quality software development services? Reach out to discuss your project requirements and how I can
             help bring your ideas to life.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-8">
