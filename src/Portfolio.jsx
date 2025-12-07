@@ -254,9 +254,9 @@ export default function DeveloperPortfolio() {
       icon: <Syringe className="w-6 h-6" />,
     },
     {
-      name: "Checkpoint Ordering System",
+      name: "CheckBook Ordering System",
       description:
-        "Built a backend system for managing checkpoint orders, including order placement, tracking, and fulfillment processes for KCB Bank Tanzania",
+        "Built a backend system for managing checkbook orders, including order placement, tracking, and fulfillment processes for KCB Bank Tanzania",
       tech: [
         "Java",
         "Spring Boot",
