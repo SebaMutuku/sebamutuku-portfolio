@@ -23,12 +23,18 @@ import { getExperienceYears } from "./utils/utils";
 import { useMemo } from "react";
 
 export default function DeveloperPortfolio() {
-  const [activeSection, setActiveSection] = useState("home");
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [displayText, setDisplayText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [loopNum, setLoopNum] = useState(0);
-  const [typingSpeed, setTypingSpeed] = useState(150);
+  const [state, setState] = useState({
+    activeSection: "home",
+    mobileMenuOpen: false,
+    displayText: "",
+    isDeleting: false,
+    loopNum: 0,
+    typingSpeed: 150,
+  });
+
+  const { activeSection, mobileMenuOpen, displayText, isDeleting, loopNum, typingSpeed } = state;
+  const updateState = (current) => setState((prev) => ({ ...prev, ...current }));
+
   const years = getExperienceYears(2018, 4);
 
   const roles = useMemo(
@@ -45,21 +51,30 @@ export default function DeveloperPortfolio() {
   );
   useEffect(() => {
     let timer;
+
     const handleType = () => {
       const i = loopNum % roles.length;
       const fullText = roles[i];
+      const nextText = isDeleting
+        ? fullText.substring(0, displayText.length - 1)
+        : fullText.substring(0, displayText.length + 1);
 
-      setDisplayText(
-        isDeleting ? fullText.substring(0, displayText.length - 1) : fullText.substring(0, displayText.length + 1)
-      );
+      // update displayText correctly
+      updateState({ displayText: nextText });
 
-      setTypingSpeed(isDeleting ? 50 : 150);
+      // update typing speed
+      updateState({ typingSpeed: isDeleting ? 50 : 150 });
 
-      if (!isDeleting && displayText === fullText) {
-        setTimeout(() => setIsDeleting(true), 2000);
-      } else if (isDeleting && displayText === "") {
-        setIsDeleting(false);
-        setLoopNum(loopNum + 1);
+      // finished typing full word → start deleting
+      if (!isDeleting && nextText === fullText) {
+        setTimeout(() => updateState({ isDeleting: true }), 2000);
+      }
+      // finished deleting → move to next word
+      else if (isDeleting && nextText === "") {
+        updateState({
+          isDeleting: false,
+          loopNum: loopNum + 1,
+        });
       }
     };
 
@@ -68,9 +83,14 @@ export default function DeveloperPortfolio() {
   }, [displayText, isDeleting, loopNum, typingSpeed, roles]);
 
   const scrollToSection = (section) => {
-    setActiveSection(section);
-    setMobileMenuOpen(false);
-    document.getElementById(section)?.scrollIntoView({ behavior: "smooth" });
+    updateState({
+      activeSection: section,
+      mobileMenuOpen: false,
+    });
+
+    document.getElementById(section)?.scrollIntoView({
+      behavior: "smooth",
+    });
   };
 
   const techStack = {
@@ -396,7 +416,7 @@ export default function DeveloperPortfolio() {
               ))}
             </div>
 
-            <button className="md:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <button className="md:hidden" onClick={() => updateState({ mobileMenuOpen: !mobileMenuOpen })}>
               {mobileMenuOpen ? <X /> : <Menu />}
             </button>
           </div>
