@@ -20,6 +20,7 @@ import {
   Monitor,
 } from "lucide-react";
 import { getExperienceYears } from "./utils/utils";
+import { useMemo } from "react";
 
 export default function DeveloperPortfolio() {
   const [activeSection, setActiveSection] = useState("home");
@@ -30,15 +31,18 @@ export default function DeveloperPortfolio() {
   const [typingSpeed, setTypingSpeed] = useState(150);
   const years = getExperienceYears(2018, 4);
 
-  const roles = [
-    "Android Developer",
-    "Backend Developer",
-    "HAPI and FHIR SDK developer",
-    "Corebanking Applications Developer",
-    "DevOps Enthusiast",
-    "Tech Team Lead",
-    "Open Source Contributor",
-  ];
+  const roles = useMemo(
+    () => [
+      "Android Developer",
+      "Backend Developer",
+      "HAPI and FHIR SDK developer",
+      "Corebanking Applications Developer",
+      "DevOps Enthusiast",
+      "Tech Team Lead",
+      "Open Source Contributor",
+    ],
+    []
+  );
   useEffect(() => {
     let timer;
     const handleType = () => {
@@ -61,7 +65,7 @@ export default function DeveloperPortfolio() {
 
     timer = setTimeout(handleType, typingSpeed);
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, loopNum, typingSpeed]);
+  }, [displayText, isDeleting, loopNum, typingSpeed, roles]);
 
   const scrollToSection = (section) => {
     setActiveSection(section);
