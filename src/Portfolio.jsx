@@ -16,6 +16,8 @@ import {
   Computer,
   Syringe,
   Book,
+  Globe,
+  Monitor,
 } from "lucide-react";
 import { getExperienceYears } from "./utils/utils";
 
@@ -31,7 +33,7 @@ export default function DeveloperPortfolio() {
   const roles = [
     "Android Developer",
     "Backend Developer",
-    "HAPI FHIR SDK developer",
+    "HAPI and FHIR SDK developer",
     "Corebanking Applications Developer",
     "DevOps Enthusiast",
     "Tech Team Lead",
@@ -149,7 +151,8 @@ export default function DeveloperPortfolio() {
       "HTTP/HTTPS",
       "DNS",
       "DHCP",
-      "Multicast",
+      "Multicasting",
+      "BroadCasting",
       "Routing Protocols",
       "Multiplexing",
       "Network Security",
@@ -217,7 +220,7 @@ export default function DeveloperPortfolio() {
       icon: <Computer className="w-6 h-6" />,
     },
     {
-      name: "WHO ANC Mobile Application",
+      name: "WHO ANC System",
       description:
         "Developed a mobile application for antenatal care based on WHO guidelines. The app provides healthcare workers with tools for patient management, data collection, and health education.",
       tech: [
@@ -225,18 +228,17 @@ export default function DeveloperPortfolio() {
         "Jetpack Compose",
         "Live Data",
         "Android",
-        "JavaScript",
-        "FHIR",
+        "FHIR and FHIR resources",
         "Google FHIR SDK",
         "Firebase",
         "REST API",
-        "WHO Guidelines",
+        "WHO Smart Guidelines",
       ],
       category: "Android/Health/FHIR",
       icon: <Syringe className="w-6 h-6" />,
     },
     {
-      name: "WHO Child Immunization App",
+      name: "WHO Child Immunization",
       description:
         "Created a mobile application to support child immunization programs based on WHO guidelines. The app assists healthcare workers in tracking immunization schedules, recording vaccinations, and educating parents.",
       tech: [
@@ -263,7 +265,7 @@ export default function DeveloperPortfolio() {
         "REST API",
         "PostgreSQL",
         "Docker",
-        "Kubernetes",
+        "Openshift",
         "T24",
         "Integration",
         "Event-Driven Architecture",
@@ -272,6 +274,27 @@ export default function DeveloperPortfolio() {
       ],
       category: "Fiancial/Backend",
       icon: <Book className="w-6 h-6" />,
+    },
+    {
+      name: "School Gear payment system",
+      description:
+        "Developed a generic backend system to facilitate school fee payments, enabling parents and guardians to make secure online payments for school supplies and uniforms for KCB Bank Rwanda/BPR bank",
+      tech: [
+        "Java",
+        "Quarkus",
+        "REST API",
+        "Oracle",
+        "Docker",
+        "Openshift",
+        "T24",
+        "Event-Driven Architecture",
+        "Apache Kafka",
+        "WSO2",
+        "Microservices",
+        "Istio",
+      ],
+      category: "Fiancial/Backend",
+      icon: <Monitor className="w-6 h-6" />,
     },
   ];
 
@@ -287,10 +310,9 @@ export default function DeveloperPortfolio() {
         "Integrated multiple third-party services to enhance banking functionalities",
         "Optimized backend processes leading to a 30% reduction in transaction processing time",
         "Mentored junior developers and conducted code reviews to ensure high-quality code",
-        "Build insurance and agency banking solutions using T24 core banking system",
         "Led the migration of legacy systems to modern cloud-based architectures",
         "Migrated core banking applications to Kubernetes and OpenShift environments",
-        "Implemented CI/CD pipelines using GitHub Actions and Terraform for automated deployments",
+        "Introduced configuration server and HashiCorp Vault for secure configuration management",
         "Build a modern ATM card processing system integrated with T24",
         "Build a modern Agency banking solution integrated with T24",
         "Build a modern Bancassurance platform integrated with Corebanking systems",
@@ -307,7 +329,7 @@ export default function DeveloperPortfolio() {
         "Implemented geospatial data solutions for clients in the health and infrastructure sectors",
         "Collaborated with cross-functional teams to deliver high-quality software solutions on time",
         "Optimized application performance, resulting in a 25% improvement in data processing speeds",
-        "Led the development of a mobile health application used by over 10,000 healthcare workers",
+        "Led the development of a mobile health application used by over 120,000 healthcare workers",
         "Integrated FHIR-based applications with existing health information systems",
         "Provided technical training and support to clients on using FHIR standards in their applications",
         "Enhanced the HAPI FHIR SDK to support new FHIR resources and improve performance",
@@ -333,7 +355,7 @@ export default function DeveloperPortfolio() {
     {
       title: "Software engineer Intern",
       company: "SimbaTech Solutions Ltd",
-      period: "April 2018 – Sept 2018",
+      period: "April 2018 – Aug 2018",
       description: "Developed Financle software solutions and provided technical support for various projects.",
       achievements: [
         "Built modules for Finacle core banking system to enhance functionality",
@@ -408,37 +430,40 @@ export default function DeveloperPortfolio() {
             <span className="mr-2">I'm a</span>
             <span className="text-emerald-400 font-semibold border-r-2 border-emerald-400 pr-1">{displayText}</span>
           </div>
-          <div className="text-xl text-gray-400 max-w-3xl mx-auto mb-12 space-y-6">
-            <b>Profession Summary</b>
+          <div className="text-[1.25rem] leading-relaxed text-gray-500 max-w-3xl mx-auto mb-12 space-y-6">
+            <h2 className="text-2xl font-semibold text-gray-300">Professional Summary</h2>
+
             <p>
-              Android and Web Backend Engineer with {years}+ years of experience — an innovative and talented software
-              developer with strong proficiency in Java, Spring, Spring Boot, Kotlin Spring, and Ktor with Koin, and web
-              service creation (SOAP and REST).
-            </p>
-            <p>
-              Experienced in Scala, Python, Django, Kotlin, and cloud-native development. Skilled in Git and Git
-              Workflows, with certifications in CI/CD using GitHub Actions and Microsoft Team Foundation Git.
+              Android and Web Backend Engineer with <b>{years}+ years</b> of experience. A highly adaptable and
+              innovative software developer with strong proficiency in Java, Spring, Spring Boot, Kotlin Spring, Ktor
+              with Koin, and service development using both SOAP and REST.
             </p>
 
             <p>
-              Deep knowledge of Docker, Kubernetes, OpenShift, Spring Cloud, and Configuration Server. Proficient in
-              Linux, shell scripting, and deployment on Linux environments.
+              Skilled in Scala, Python, Django, and cloud-native development. Well-versed in Git and Git workflows,
+              supported by certifications in CI/CD using GitHub Actions and Microsoft Team Foundation Git.
             </p>
 
             <p>
-              Experienced in developing frontends with React Native (Android & iOS), Flutter (cross-platform), and React
-              JS. Worked extensively with financial applications including Temenos and Finacle, and their related
-              systems.
+              Possesses deep knowledge of Docker, Kubernetes, OpenShift, Spring Cloud, Configuration Server, HashiCorp
+              Vault, and Istio Service Mesh. Highly proficient in Linux, shell scripting, and deployments across
+              Linux-based environments.
             </p>
 
             <p>
-              Specialized in building health-related software using the Google FHIR SDK and FHIR Resources. Experienced
-              with the J-easy Rules Engine for implementing complex business logic.
+              Experienced in building mobile applications using Kotlin, Compose/KMM, React Native (Android & iOS), and
+              Flutter. Worked extensively with enterprise-grade financial applications including Temenos, Finacle, and
+              their related modules.
             </p>
 
             <p>
-              Strong focus on scalable backend architecture, DevOps automation, and delivering high-quality,
-              production-ready software.
+              Specialized in developing health-tech solutions using Google FHIR SDK and FHIR resources. Experienced in
+              implementing complex business logic with rules engines such as J-Easy and Drools.
+            </p>
+
+            <p>
+              Strong focus on scalable loosely coupled and load balanced backend systems, microservices architecture,
+              DevOps automation, and delivering high-quality, production-ready software.
             </p>
           </div>
 
@@ -469,18 +494,19 @@ export default function DeveloperPortfolio() {
             <div>
               <h3 className="text-2xl font-bold text-emerald-400 mb-4">Software Developer and Solutions provider</h3>
               <p className="text-gray-300 mb-4 leading-relaxed text-justify">
-                Android and Web Backend Engineer with {years}+ years of experience — an innovative and talented software
-                developer with strong proficiency in Java, Spring, Spring Boot, Kotlin Spring, and Ktor with Koin, and
-                web service creation (SOAP and REST). Experienced in Scala, Python, Django, Kotlin, and cloud-native
-                development. Skilled in Git and Git Workflows, with certifications in CI/CD using GitHub Actions and
-                Microsoft Team Foundation Git. Deep knowledge of Docker, Kubernetes, OpenShift, Spring Cloud, and
-                Configuration Server. Proficient in Linux, shell scripting, and deployment on Linux environments.
-                Experienced in developing frontends with React Native (Android & iOS), Flutter (cross-platform), and
-                React JS. Worked extensively with financial applications including Temenos and Finacle, and their
-                related systems. Specialized in building health-related software using the Google FHIR SDK and FHIR
-                Resources. Experienced with the J-easy Rules Engine for implementing complex business logic. Strong
-                focus on scalable backend architecture, DevOps automation, and delivering high-quality, production-ready
-                software.
+                Android and Web Backend Engineer with {years}+ years of experience. A highly adaptable and innovative
+                software developer with strong proficiency in Java, Spring, Spring Boot, Kotlin Spring, Ktor with Koin,
+                and service development using both SOAP and REST. Skilled in Scala, Python, Django, and cloud-native
+                development. Well-versed in Git and Git workflows, supported by certifications in CI/CD using GitHub
+                Actions and Microsoft Team Foundation Git. Possesses deep knowledge of Docker, Kubernetes, OpenShift,
+                Spring Cloud, Configuration Server, HashiCorp Vault, and Istio Service Mesh. Highly proficient in Linux,
+                shell scripting, and deployments across Linux-based environments. Experienced in building mobile
+                applications using Kotlin, Compose/KMM, React Native (Android & iOS), and Flutter. Worked extensively
+                with enterprise-grade financial applications including Temenos, Finacle, and their related modules.
+                Specialized in developing health-tech solutions using Google FHIR SDK and FHIR resources. Experienced in
+                implementing complex business logic with rules engines such as J-Easy and Drools. Strong focus on
+                scalable backend systems, microservices architecture, DevOps automation, and delivering high-quality,
+                production-ready software.
               </p>
               <p className="text-gray-300 mb-4 leading-relaxed text-justify">
                 My expertise spans from architecting scalable APIs, Android Applications and building Financial and
@@ -496,7 +522,7 @@ export default function DeveloperPortfolio() {
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    {years}+ years of development experience
+                    {years}+ years of software development experience
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
@@ -504,7 +530,7 @@ export default function DeveloperPortfolio() {
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    Networking Developer with c++
+                    Networking Developer with C++
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
@@ -516,29 +542,13 @@ export default function DeveloperPortfolio() {
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    HAPI FHIR SDK contribution
+                    HAPI and FHIR SDK Developer
                   </li>
                   <li className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    Corebaking Applications Developer (T24 and Financial)
+                    Corebaking Applications Developer (T24/Temenos)
                   </li>
                 </ul>
-              </div>
-              <div className="flex gap-4">
-                <a
-                  href="mailto:sebastian.muthiani@gmail.com"
-                  className="flex-1 flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 px-4 py-3 rounded-lg transition-all">
-                  <Mail className="w-5 h-5" />
-                  Email
-                </a>
-                <a
-                  href="https://github.com/SebaMutuku"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-4 py-3 rounded-lg transition-all">
-                  <Github className="w-5 h-5" />
-                  GitHub
-                </a>
               </div>
             </div>
           </div>
@@ -550,7 +560,7 @@ export default function DeveloperPortfolio() {
         <div className="max-w-7xl mx-auto relative z-10">
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center">
             <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              Featured Projects
+              Key Strategic Business Projects Completed
             </span>
           </h2>
           <p className="text-gray-400 text-center mb-12 text-lg">
@@ -605,6 +615,7 @@ export default function DeveloperPortfolio() {
                   {category === "tools" && <Terminal className="w-5 h-5" />}
                   {category === "cloud" && <Layers className="w-5 h-5" />}
                   {category === "specialization" && <Zap className="w-5 h-5" />}
+                  {category === "networking" && <Globe className="w-5 h-5" />}
                   {category}
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -677,10 +688,10 @@ export default function DeveloperPortfolio() {
               sebastian.muthiani@gmail.com
             </a>
             <a
-              href="tel:+254719700312"
+              href="tel:+254727538818"
               className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-8 py-4 rounded-lg font-semibold transition-all hover:scale-105">
               <Phone className="w-5 h-5" />
-              +254 727 538818
+              +254 727 538 818
             </a>
           </div>
           <div className="flex justify-center gap-6">
