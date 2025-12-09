@@ -28,11 +28,11 @@ export default function DeveloperPortfolio() {
     mobileMenuOpen: false,
     displayText: "",
     isDeleting: false,
-    loopNum: 0,
+    index: 0,
     typingSpeed: 150,
   });
 
-  const { activeSection, mobileMenuOpen, displayText, isDeleting, loopNum, typingSpeed } = state;
+  const { activeSection, mobileMenuOpen, displayText, isDeleting, index, typingSpeed } = state;
   const updateState = (current) => setState((prev) => ({ ...prev, ...current }));
 
   const years = getExperienceYears(2018, 4);
@@ -53,7 +53,7 @@ export default function DeveloperPortfolio() {
     let timer;
 
     const handleType = () => {
-      const i = loopNum % roles.length;
+      const i = index % roles.length;
       const fullText = roles[i];
       const nextText = isDeleting
         ? fullText.substring(0, displayText.length - 1)
@@ -73,14 +73,14 @@ export default function DeveloperPortfolio() {
       else if (isDeleting && nextText === "") {
         updateState({
           isDeleting: false,
-          loopNum: loopNum + 1,
+          index: index + 1,
         });
       }
     };
 
     timer = setTimeout(handleType, typingSpeed);
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, loopNum, typingSpeed, roles]);
+  }, [displayText, isDeleting, index, typingSpeed, roles]);
 
   const scrollToSection = (section) => {
     updateState({
@@ -392,7 +392,7 @@ export default function DeveloperPortfolio() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-gray-900 text-white">
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -403,6 +403,13 @@ export default function DeveloperPortfolio() {
       <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md z-50 border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-2 text-xl font-bold w-40 h-40">
+              <Terminal className="w-6 h-6 text-emerald-400" />
+              <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                AM_DEV
+              </span>
+            </div>
+
             <div className="hidden md:flex space-x-8">
               {["home", "about", "projects", "skills", "experience", "contact"].map((section) => (
                 <button
@@ -415,7 +422,6 @@ export default function DeveloperPortfolio() {
                 </button>
               ))}
             </div>
-
             <button className="md:hidden" onClick={() => updateState({ mobileMenuOpen: !mobileMenuOpen })}>
               {mobileMenuOpen ? <X /> : <Menu />}
             </button>
@@ -454,9 +460,8 @@ export default function DeveloperPortfolio() {
             <span className="mr-2">I'm a</span>
             <span className="text-emerald-400 font-semibold border-r-2 border-emerald-400 pr-1">{displayText}</span>
           </div>
-          <div className="text-[1.25rem] leading-relaxed text-gray-500 max-w-3xl mx-auto mb-12 space-y-6">
+          <div className="text-[1.25rem] leading-relaxed text-gray-300 w-4xl mx-auto mb-12 space-y-6">
             <h2 className="text-2xl font-semibold text-gray-300">Professional Summary</h2>
-
             <p>
               Android and Web Backend Engineer with <b>{years}+ years</b> of experience. A highly adaptable and
               innovative software developer with strong proficiency in Java, Spring, Spring Boot, Kotlin Spring, Ktor
@@ -499,7 +504,7 @@ export default function DeveloperPortfolio() {
             </button>
             <button
               onClick={() => scrollToSection("contact")}
-              className="px-8 py-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg font-semibold transition-all hover:scale-105">
+              className="px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg font-semibold transition-all hover:scale-105">
               Get In Touch
             </button>
           </div>
@@ -507,7 +512,7 @@ export default function DeveloperPortfolio() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-slate-900/50">
+      <section id="about" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
         <div className="max-w-6xl mx-auto relative z-10">
           <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
             <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
@@ -541,7 +546,7 @@ export default function DeveloperPortfolio() {
               </p>
             </div>
             <div className="space-y-4">
-              <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
+              <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
                 <h4 className="text-xl font-bold text-emerald-400 mb-3">Quick Facts</h4>
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-center gap-2">
@@ -595,10 +600,10 @@ export default function DeveloperPortfolio() {
             {projects.map((project, index) => (
               <div
                 key={index}
-                className="group bg-slate-900/50 border border-slate-800 rounded-lg p-6 hover:border-emerald-500/50 transition-all hover:-translate-y-2">
+                className="group bg-gray-900/50 border border-gray-700 rounded-lg p-6 hover:border-emerald-500/50 transition-all hover:-translate-y-2">
                 <div className="flex items-start justify-between mb-4">
                   <div className="p-3 bg-emerald-500/10 rounded-lg text-emerald-400">{project.icon}</div>
-                  <span className="px-3 py-1 bg-slate-800 text-emerald-400 rounded-full text-xs">
+                  <span className="px-3 py-1 bg-gray-800 text-emerald-400 rounded-full text-xs">
                     {project.category}
                   </span>
                 </div>
@@ -608,7 +613,7 @@ export default function DeveloperPortfolio() {
                 <p className="text-gray-400 mb-4 text-sm leading-relaxed">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map((tech, i) => (
-                    <span key={i} className="px-2 py-1 bg-slate-800 text-gray-300 rounded text-xs">
+                    <span key={i} className="px-2 py-1 bg-gray-800 text-gray-300 rounded text-xs">
                       {tech}
                     </span>
                   ))}
@@ -620,7 +625,7 @@ export default function DeveloperPortfolio() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-slate-900/50">
+      <section id="skills" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
         <div className="max-w-7xl mx-auto relative z-10">
           <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
             <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
@@ -631,7 +636,7 @@ export default function DeveloperPortfolio() {
             {Object.entries(techStack).map(([category, skills], index) => (
               <div
                 key={index}
-                className="bg-slate-900/50 border border-slate-800 rounded-lg p-6 hover:border-emerald-500/50 transition-all">
+                className="bg-gray-900/50 border border-gray-700 rounded-lg p-6 hover:border-emerald-500/50 transition-all">
                 <h3 className="text-xl font-bold text-emerald-400 mb-4 capitalize flex items-center gap-2">
                   {category === "android" && <Smartphone className="w-5 h-5" />}
                   {category === "backend" && <Server className="w-5 h-5" />}
@@ -646,7 +651,7 @@ export default function DeveloperPortfolio() {
                   {skills.map((skill, i) => (
                     <span
                       key={i}
-                      className="px-3 py-1 bg-slate-800 text-gray-300 rounded-md text-sm hover:bg-emerald-500/20 hover:text-emerald-400 transition-all cursor-default">
+                      className="px-3 py-1 bg-gray-800 text-gray-300 rounded-md text-sm hover:bg-emerald-500/20 hover:text-emerald-400 transition-all cursor-default">
                       {skill}
                     </span>
                   ))}
@@ -669,7 +674,7 @@ export default function DeveloperPortfolio() {
             {experience.map((job, index) => (
               <div
                 key={index}
-                className="bg-slate-900/50 border border-slate-800 rounded-lg p-6 hover:border-emerald-500/50 transition-all">
+                className="bg-gray-900/50 border border-gray-700 rounded-lg p-6 hover:border-emerald-500/50 transition-all">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
                   <div>
                     <h3 className="text-2xl font-bold text-emerald-400 mb-2">{job.title}</h3>
@@ -693,7 +698,7 @@ export default function DeveloperPortfolio() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-slate-900/50">
+      <section id="contact" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
@@ -713,7 +718,7 @@ export default function DeveloperPortfolio() {
             </a>
             <a
               href="tel:+254727538818"
-              className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-8 py-4 rounded-lg font-semibold transition-all hover:scale-105">
+              className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 px-8 py-4 rounded-lg font-semibold transition-all hover:scale-105">
               <Phone className="w-5 h-5" />
               +254 727 538 818
             </a>
@@ -723,12 +728,12 @@ export default function DeveloperPortfolio() {
               href="https://github.com/SebaMutuku"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-all hover:scale-110">
+              className="p-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg transition-all hover:scale-110">
               <Github className="w-6 h-6" />
             </a>
             <a
               href="mailto:sebastian.muthiani@gmail.com"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg transition-all hover:scale-110">
+              className="p-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg transition-all hover:scale-110">
               <Mail className="w-6 h-6" />
             </a>
           </div>
@@ -740,7 +745,7 @@ export default function DeveloperPortfolio() {
       </section>
 
       {/* Footer */}
-      <footer className="relative py-8 px-4 sm:px-6 lg:px-8 border-t border-slate-800">
+      <footer className="relative py-8 px-4 sm:px-6 lg:px-8 border-t border-gray-800">
         <div className="max-w-7xl mx-auto text-center text-gray-400 relative z-10">
           <p className="mb-2">Designed & Built by Sebastian Mutuku</p>
           <p className="text-sm">© {new Date().getFullYear()} All rights reserved.</p>
