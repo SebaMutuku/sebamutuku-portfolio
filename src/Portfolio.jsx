@@ -577,6 +577,10 @@ export default function DeveloperPortfolio() {
                     <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
                     Corebaking Applications Developer (T24/Temenos)
                   </li>
+                  <li className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                    Published artifacts to maven central and sonatype repositories
+                  </li>
                 </ul>
               </div>
             </div>
