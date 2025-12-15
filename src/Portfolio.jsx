@@ -463,36 +463,11 @@ export default function DeveloperPortfolio() {
           <div className="text-[1.25rem] leading-relaxed text-gray-300 w-4xl mx-auto mb-12 space-y-6">
             <h2 className="text-2xl font-semibold text-gray-300">Professional Summary</h2>
             <p>
-              Android and Web Backend Engineer with <b>{years}+ years</b> of experience. A highly adaptable and
-              innovative software developer with strong proficiency in Java, Spring, Spring Boot, Kotlin Spring, Ktor
-              with Koin, and service development using both SOAP and REST.
-            </p>
-
-            <p>
-              Skilled in Scala, Python, Django, and cloud-native development. Well-versed in Git and Git workflows,
-              supported by certifications in CI/CD using GitHub Actions and Microsoft Team Foundation Git.
-            </p>
-
-            <p>
-              Possesses deep knowledge of Docker, Kubernetes, OpenShift, Spring Cloud, Configuration Server, HashiCorp
-              Vault, and Istio Service Mesh. Highly proficient in Linux, shell scripting, and deployments across
-              Linux-based environments.
-            </p>
-
-            <p>
-              Experienced in building mobile applications using Kotlin, Compose/KMM, React Native (Android & iOS), and
-              Flutter. Worked extensively with enterprise-grade financial applications including Temenos, Finacle, and
-              their related modules.
-            </p>
-
-            <p>
-              Specialized in developing health-tech solutions using Google FHIR SDK and FHIR resources. Experienced in
-              implementing complex business logic with rules engines such as J-Easy and Drools.
-            </p>
-
-            <p>
-              Strong focus on scalable loosely coupled and load balanced backend systems, microservices architecture,
-              DevOps automation, and delivering high-quality, production-ready software.
+              Senior Backend Engineer with <b>{years}+ years</b> of experience building high-volume banking, payment,
+              and enterprise backend systems. Strong expertise in Java, Spring Boot, Temenos T24, REST APIs, and
+              Kubernetes. Proven record of delivering production-grade financial systems, modernizing legacy platforms,
+              and deploying scalable services in regulated environments. Contributor to open-source: deployed a Java
+              artifact to Maven Central
             </p>
           </div>
 
@@ -523,19 +498,11 @@ export default function DeveloperPortfolio() {
             <div>
               <h3 className="text-2xl font-bold text-emerald-400 mb-4">Software Developer and Solutions provider</h3>
               <p className="text-gray-300 mb-4 leading-relaxed text-justify">
-                Android and Web Backend Engineer with {years}+ years of experience. A highly adaptable and innovative
-                software developer with strong proficiency in Java, Spring, Spring Boot, Kotlin Spring, Ktor with Koin,
-                and service development using both SOAP and REST. Skilled in Scala, Python, Django, and cloud-native
-                development. Well-versed in Git and Git workflows, supported by certifications in CI/CD using GitHub
-                Actions and Microsoft Team Foundation Git. Possesses deep knowledge of Docker, Kubernetes, OpenShift,
-                Spring Cloud, Configuration Server, HashiCorp Vault, and Istio Service Mesh. Highly proficient in Linux,
-                shell scripting, and deployments across Linux-based environments. Experienced in building mobile
-                applications using Kotlin, Compose/KMM, React Native (Android & iOS), and Flutter. Worked extensively
-                with enterprise-grade financial applications including Temenos, Finacle, and their related modules.
-                Specialized in developing health-tech solutions using Google FHIR SDK and FHIR resources. Experienced in
-                implementing complex business logic with rules engines such as J-Easy and Drools. Strong focus on
-                scalable backend systems, microservices architecture, DevOps automation, and delivering high-quality,
-                production-ready software.
+                Senior Backend Engineer with{years}+ years of experience building high-volume banking, payment, and
+                enterprise backend systems. Strong expertise in Java, Spring Boot, Temenos T24, REST APIs, and
+                Kubernetes. Proven record of delivering production-grade financial systems, modernizing legacy
+                platforms, and deploying scalable services in regulated environments. Contributor to open-source:
+                deployed a Java artifact to Maven Central.
               </p>
               <p className="text-gray-300 mb-4 leading-relaxed text-justify">
                 My expertise spans from architecting scalable APIs, Android Applications and building Financial and
