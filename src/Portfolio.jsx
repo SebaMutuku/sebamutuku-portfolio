@@ -406,7 +406,7 @@ export default function DeveloperPortfolio() {
             <div className="flex items-center gap-2 text-xl font-bold w-40 h-40">
               <Terminal className="w-6 h-6 text-emerald-400" />
               <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                AM_DEV
+                IAM_SOFTWARE_DEV
               </span>
             </div>
 
