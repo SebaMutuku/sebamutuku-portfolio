@@ -1,3 +1,234 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --bg: #07090f;
+  --accent: 52 211 153; /* emerald-400 */
+  --accent-2: 34 211 238; /* cyan-400 */
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: #e5e7eb;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-mono {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+::selection {
+  background: rgb(var(--accent) / 0.3);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: #1f2937;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}
+
+/* ---------- Background ---------- */
+.bg-grid {
+  background-image: linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 100%);
+}
+
+.aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(110px);
+  opacity: 0.35;
+  will-change: transform;
+}
+.aurora-1 {
+  width: 38rem;
+  height: 38rem;
+  top: -10rem;
+  left: -8rem;
+  background: rgb(var(--accent));
+  animation: drift-1 22s ease-in-out infinite alternate;
+}
+.aurora-2 {
+  width: 34rem;
+  height: 34rem;
+  top: 10rem;
+  right: -10rem;
+  background: #6366f1;
+  animation: drift-2 26s ease-in-out infinite alternate;
+}
+.aurora-3 {
+  width: 28rem;
+  height: 28rem;
+  bottom: -8rem;
+  left: 35%;
+  background: rgb(var(--accent-2));
+  opacity: 0.2;
+  animation: drift-1 30s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes drift-1 {
+  to {
+    transform: translate3d(8rem, 5rem, 0) scale(1.15);
+  }
+}
+@keyframes drift-2 {
+  to {
+    transform: translate3d(-7rem, 6rem, 0) scale(0.9);
+  }
+}
+
+/* ---------- Text ---------- */
+.text-gradient {
+  background: linear-gradient(100deg, #6ee7b7 0%, #22d3ee 50%, #818cf8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-animated {
+  background: linear-gradient(100deg, #6ee7b7, #22d3ee, #818cf8, #6ee7b7);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 8s linear infinite;
+}
+@keyframes shine {
+  to {
+    background-position: 250% 0;
+  }
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 3px;
+  vertical-align: -0.12em;
+  background: rgb(var(--accent));
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ---------- Reveal on scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--delay, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Spotlight card ---------- */
+.spotlight {
+  position: relative;
+  overflow: hidden;
+  background: rgb(255 255 255 / 0.03);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 1rem;
+  transition: border-color 0.3s, transform 0.3s, background 0.3s;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--accent) / 0.13), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.spotlight:hover {
+  border-color: rgb(var(--accent) / 0.4);
+  background: rgb(255 255 255 / 0.05);
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* ---------- Marquee ---------- */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Timeline ---------- */
+.timeline-line {
+  background: linear-gradient(to bottom, rgb(var(--accent) / 0.6), rgb(var(--accent-2) / 0.15) 80%, transparent);
+}
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 1px solid rgb(var(--accent) / 0.6);
+  animation: ping-ring 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes ping-ring {
+  75%,
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,727 +1,514 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
-  Mail,
-  Phone,
+  ArrowRight,
+  ArrowUp,
+  Briefcase,
+  Check,
+  Copy,
+  DownloadCloud,
   Github,
+  GraduationCap,
+  Mail,
   MapPin,
   Menu,
-  X,
-  Code,
-  Database,
+  Package,
+  Phone,
   Terminal,
-  Zap,
-  Layers,
-  Server,
-  Smartphone,
-  Computer,
-  Syringe,
-  Book,
-  Globe,
-  Monitor,
+  Users,
+  X,
 } from "lucide-react";
 import { getExperienceYears } from "./utils/utils";
-import { useMemo } from "react";
+import { useCountUp, useReveal, useScrollProgress, useScrollSpy, useTypewriter } from "./hooks";
+import { FILTERS, MARQUEE, NAV, ROLES, experience, projects, techStack } from "./data";
+
+const EMAIL = "sebastian.muthiani@gmail.com";
+const PHONE = "+254 727 538 818";
+const RESUME = `${process.env.PUBLIC_URL}/resume.pdf`;
+
+/* ---------- small building blocks ---------- */
+
+function Reveal({ as: Tag = "div", delay = 0, className = "", children, ...rest }) {
+  const ref = useReveal();
+  return (
+    <Tag ref={ref} className={`reveal ${className}`} style={{ "--delay": `${delay}ms` }} {...rest}>
+      {children}
+    </Tag>
+  );
+}
+
+function SpotlightCard({ className = "", children, ...rest }) {
+  const onMove = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
+  };
+  return (
+    <div onMouseMove={onMove} className={`spotlight ${className}`} {...rest}>
+      {children}
+    </div>
+  );
+}
+
+function SectionHeading({ eyebrow, title, subtitle }) {
+  return (
+    <Reveal className="mb-14 text-center">
+      <p className="font-mono text-sm tracking-widest text-emerald-400 uppercase mb-3">{eyebrow}</p>
+      <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">{title}</h2>
+      {subtitle && <p className="mt-4 max-w-2xl mx-auto text-gray-400 text-lg leading-relaxed">{subtitle}</p>}
+    </Reveal>
+  );
+}
+
+function Stat({ end, suffix = "", label }) {
+  const [ref, value] = useCountUp(end);
+  return (
+    <div ref={ref} className="text-center">
+      <div className="text-3xl sm:text-4xl font-bold text-white tabular-nums">
+        {value.toLocaleString()}
+        <span className="text-emerald-400">{suffix}</span>
+      </div>
+      <div className="mt-1 text-xs sm:text-sm text-gray-400">{label}</div>
+    </div>
+  );
+}
+
+const btnPrimary =
+  "group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-gray-950 bg-gradient-to-r from-emerald-400 to-cyan-400 shadow-lg shadow-emerald-500/20 transition-all hover:shadow-emerald-400/40 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
+const btnGhost =
+  "inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-gray-100 bg-white/5 border border-white/10 backdrop-blur transition-all hover:bg-white/10 hover:border-white/20 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400";
+
+/* ---------- page ---------- */
 
 export default function DeveloperPortfolio() {
-  const [state, setState] = useState({
-    activeSection: "home",
-    mobileMenuOpen: false,
-    displayText: "",
-    isDeleting: false,
-    index: 0,
-    typingSpeed: 150,
-  });
-
-  const { activeSection, mobileMenuOpen, displayText, isDeleting, index, typingSpeed } = state;
-  const updateState = (current) => setState((prev) => ({ ...prev, ...current }));
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [filter, setFilter] = useState("All");
+  const [copied, setCopied] = useState(false);
 
   const years = getExperienceYears(2018, 4);
+  const role = useTypewriter(ROLES);
+  const active = useScrollSpy(NAV);
+  const progress = useScrollProgress();
 
-  const roles = useMemo(
-    () => [
-      "Android Developer",
-      "Backend Developer",
-      "HAPI and FHIR SDK developer",
-      "Corebanking Applications Developer",
-      "DevOps Enthusiast",
-      "Tech Team Lead",
-      "Open Source Contributor",
-    ],
-    []
+  const visibleProjects = useMemo(
+    () => (filter === "All" ? projects : projects.filter((p) => p.tags.includes(filter))),
+    [filter]
   );
-  useEffect(() => {
-    let timer;
 
-    const handleType = () => {
-      const i = index % roles.length;
-      const fullText = roles[i];
-      const nextText = isDeleting
-        ? fullText.substring(0, displayText.length - 1)
-        : fullText.substring(0, displayText.length + 1);
+  const go = useCallback((id) => {
+    setMenuOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  }, []);
 
-      // update displayText correctly
-      updateState({ displayText: nextText });
-
-      // update typing speed
-      updateState({ typingSpeed: isDeleting ? 50 : 150 });
-
-      // finished typing full word → start deleting
-      if (!isDeleting && nextText === fullText) {
-        setTimeout(() => updateState({ isDeleting: true }), 2000);
-      }
-      // finished deleting → move to next word
-      else if (isDeleting && nextText === "") {
-        updateState({
-          isDeleting: false,
-          index: index + 1,
-        });
-      }
-    };
-
-    timer = setTimeout(handleType, typingSpeed);
-    return () => clearTimeout(timer);
-  }, [displayText, isDeleting, index, typingSpeed, roles]);
-
-  const scrollToSection = (section) => {
-    updateState({
-      activeSection: section,
-      mobileMenuOpen: false,
-    });
-
-    document.getElementById(section)?.scrollIntoView({
-      behavior: "smooth",
-    });
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.location.href = `mailto:${EMAIL}`;
+    }
   };
-
-  const techStack = {
-    android: [
-      "React Native",
-      "Java",
-      "Kotlin",
-      "Flutter",
-      "Live Data",
-      "Dagger and Hilt",
-      "Jetpack Compose",
-      "Retriofit",
-      "ViewModel",
-      "Redux",
-      "React Navigation",
-    ],
-    backend: [
-      "Java",
-      "Python",
-      "Kotlin",
-      "Django",
-      "REST APIs",
-      "Spring and Springboot",
-      "Spring Security",
-      "Ktor and Koin",
-      "Scala with Play Framework",
-      "Docker",
-      "Kubernetes",
-      "Redis",
-      "RabbitMQ",
-      "Apache Kafka",
-    ],
-    database: [
-      "PostgreSQL",
-      "MongoDB",
-      "CockroachDB",
-      "TimescaleDB",
-      "AWS Aurora",
-      "SQLite",
-      "Room Database",
-      "Realm DB",
-      "Firebase Realtime Database",
-      "Firebase Firestore",
-      "Oracle DB",
-      "MySQL",
-      "SQL Server",
-      "Redis",
-    ],
-    cicd: [
-      "Git",
-      "Grafana Loki",
-      "Prometheus",
-      "Terraform",
-      "Ansible",
-      "GitHub Actions",
-      "HashiCorp Vault",
-      "Istio",
-      "F5",
-      "SonarQube",
-      "WS02",
-    ],
-    cloud: ["AWS", "Google Cloud", "Azure", "Openshift", "Digital Ocean", "Heroku", "Vercel", "Netlify"],
-    specialization: ["T24", "Hapi FHIR SDK", "Integrations", "Data Pipelines", "Linux Administration"],
-    tools: [
-      "GraphQL (Apollo Server 4)",
-      "gRPC",
-      "tRPC",
-      "WebSocket",
-      "Server-Sent Events",
-      "Apache Kafka",
-      "RabbitMQ",
-      "WebAssembly",
-      "Cloudflare Workers",
-      "Vercel Edge Functions",
-    ],
-    networking: [
-      "C++",
-      "Socket Programming",
-      "Network Protocols",
-      "TCP/IP",
-      "UDP",
-      "HTTP/HTTPS",
-      "DNS",
-      "DHCP",
-      "Multicasting",
-      "BroadCasting",
-      "Routing Protocols",
-      "Multiplexing",
-      "Network Security",
-    ],
-  };
-
-  const projects = [
-    {
-      name: "Agency Banking solution",
-      description:
-        "Enhanced an existing agency banking platform by integrating new features, improving security protocols, and optimizing performance for high transaction volumes.",
-      tech: [
-        "Android",
-        "Java",
-        "Spring",
-        "REST API",
-        "Oracle",
-        "T24",
-        "Openshift",
-        "Kubernetes",
-        "Docker",
-        "Integration",
-      ],
-      category: "Financial/Android/Backend",
-      icon: <Smartphone className="w-6 h-6" />,
-    },
-    {
-      name: "Bancassurance Platform",
-      description:
-        "Developed a comprehensive bancassurance platform that seamlessly integrates banking and insurance services, providing users with a unified experience for managing their financial and insurance needs.",
-      tech: [
-        "Java",
-        "Spring Boot",
-        "Kotlin",
-        "REST API",
-        "PostgreSQL",
-        "Docker",
-        "Kubernetes",
-        "T24",
-        "Integration",
-        "Insurance",
-        "Oracle",
-      ],
-      category: "Insurance/Financial/Backend",
-      icon: <Database className="w-6 h-6" />,
-    },
-    {
-      name: "ATM card processing System",
-      description:
-        "Built a robust ATM card processing system that handles card issuance, activation, and transaction processing with high security and reliability.",
-      tech: [
-        "Java",
-        "Spring",
-        "Kotlin",
-        "REST API",
-        "PostgreSQL",
-        "Docker",
-        "Kubernetes",
-        "T24",
-        "Integration",
-        "Card Services",
-        "ISO 8583",
-      ],
-      category: "Financial/Backend/Card Services",
-      icon: <Computer className="w-6 h-6" />,
-    },
-    {
-      name: "WHO ANC System",
-      description:
-        "Developed a mobile application for antenatal care based on WHO guidelines. The app provides healthcare workers with tools for patient management, data collection, and health education.",
-      tech: [
-        "Kotlin",
-        "Jetpack Compose",
-        "Live Data",
-        "Android",
-        "FHIR and FHIR resources",
-        "Google FHIR SDK",
-        "Firebase",
-        "REST API",
-        "WHO Smart Guidelines",
-      ],
-      category: "Android/Health/FHIR",
-      icon: <Syringe className="w-6 h-6" />,
-    },
-    {
-      name: "WHO Child Immunization",
-      description:
-        "Created a mobile application to support child immunization programs based on WHO guidelines. The app assists healthcare workers in tracking immunization schedules, recording vaccinations, and educating parents.",
-      tech: [
-        "Kotlin",
-        "Jetpack Compose",
-        "Live Data",
-        "Android",
-        "JavaScript",
-        "FHIR",
-        "Google FHIR SDK",
-        "Firebase",
-        "WHO Guidelines",
-      ],
-      category: "Android/Health/FHIR",
-      icon: <Syringe className="w-6 h-6" />,
-    },
-    {
-      name: "CheckBook Ordering System",
-      description:
-        "Built a backend system for managing checkbook orders, including order placement, tracking, and fulfillment processes for KCB Bank Tanzania",
-      tech: [
-        "Java",
-        "Spring Boot",
-        "REST API",
-        "PostgreSQL",
-        "Docker",
-        "Openshift",
-        "T24",
-        "Integration",
-        "Event-Driven Architecture",
-        "RabbitMQ",
-        "Microservices",
-      ],
-      category: "Fiancial/Backend",
-      icon: <Book className="w-6 h-6" />,
-    },
-    {
-      name: "School Gear payment system",
-      description:
-        "Developed a generic backend system to facilitate school fee payments, enabling parents and guardians to make secure online payments for school supplies and uniforms for KCB Bank Rwanda/BPR bank",
-      tech: [
-        "Java",
-        "Quarkus",
-        "REST API",
-        "Oracle",
-        "Docker",
-        "Openshift",
-        "T24",
-        "Event-Driven Architecture",
-        "Apache Kafka",
-        "WSO2",
-        "Microservices",
-        "Istio",
-      ],
-      category: "Fiancial/Backend",
-      icon: <Monitor className="w-6 h-6" />,
-    },
-  ];
-
-  const experience = [
-    {
-      title: "Senior Applications Developer",
-      company: "KCB Bank Group",
-      period: "Oct 2024 – Present",
-      description:
-        "Lead developer for projects involving backend systems, API development, and integration with core banking platforms.",
-      achievements: [
-        "Spearheaded the development of microservices architecture for banking applications",
-        "Integrated multiple third-party services to enhance banking functionalities",
-        "Optimized backend processes leading to a 30% reduction in transaction processing time",
-        "Mentored junior developers and conducted code reviews to ensure high-quality code",
-        "Led the migration of legacy systems to modern cloud-based architectures",
-        "Migrated core banking applications to Kubernetes and OpenShift environments",
-        "Introduced configuration server and HashiCorp Vault for secure configuration management",
-        "Build a modern ATM card processing system integrated with T24",
-        "Build a modern Agency banking solution integrated with T24",
-        "Build a modern Bancassurance platform integrated with Corebanking systems",
-      ],
-    },
-    {
-      title: "Senior Software Engineer",
-      company: "ONA Kenya Ltd",
-      period: "Nov 2021 – Sep 2024",
-      description: "Developed HAPI FHIR SDK and built geospatial andoird applications for various clients.",
-      achievements: [
-        "Contributed to the HAPI FHIR SDK, enhancing its capabilities for healthcare application development",
-        "Developed Android applications for health data collection and management using FHIR standards",
-        "Implemented geospatial data solutions for clients in the health and infrastructure sectors",
-        "Collaborated with cross-functional teams to deliver high-quality software solutions on time",
-        "Optimized application performance, resulting in a 25% improvement in data processing speeds",
-        "Led the development of a mobile health application used by over 120,000 healthcare workers",
-        "Integrated FHIR-based applications with existing health information systems",
-        "Provided technical training and support to clients on using FHIR standards in their applications",
-        "Enhanced the HAPI FHIR SDK to support new FHIR resources and improve performance",
-      ],
-    },
-    {
-      title: "Applications Developer",
-      company: "KCB Bank Group",
-      period: "Sept 2018 – Oct 2021",
-      description: "Developed and maintained banking applications, focusing on backend services and integrations.",
-      achievements: [
-        "Developed backend services for banking applications using Java and Spring Boot",
-        "Integrated applications with core banking systems like T24 and Finacle",
-        "Improved application reliability and performance through code optimization and refactoring",
-        "Collaborated with business analysts to gather requirements and deliver solutions that met client needs",
-        "Build Checkpoint ordering system integrated with T24 for KCB Bank Tanzania",
-        "Build card ordering system integrated with T24 for KCB Bank Kenya",
-        "Enhanced a System to post transactions from external systems to T24 using REST APIs",
-        "Participated in the full software development lifecycle, from design to deployment",
-        "Provided ongoing maintenance and support for existing banking applications",
-      ],
-    },
-    {
-      title: "Software engineer Intern",
-      company: "SimbaTech Solutions Ltd",
-      period: "April 2018 – Aug 2018",
-      description: "Developed Financle software solutions and provided technical support for various projects.",
-      achievements: [
-        "Built modules for Finacle core banking system to enhance functionality",
-        "Provided technical support and troubleshooting for existing applications",
-        "Collaborated with senior developers to learn best practices and improve coding skills",
-        "Participated in code reviews and contributed to team knowledge sharing sessions",
-        "Build Credit card module for Finacle core banking system for Victoria Commercial Bank",
-      ],
-    },
-  ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      {/* Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-700"></div>
-      </div>
+    <div className="relative min-h-screen overflow-x-hidden bg-[#07090f] text-gray-200">
+      {/* scroll progress */}
+      <div
+        className="fixed top-0 left-0 z-[60] h-0.5 w-full origin-left bg-gradient-to-r from-emerald-400 via-cyan-400 to-indigo-400"
+        style={{ transform: `scaleX(${progress})` }}
+        aria-hidden="true"
+      />
 
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-slate-900/80 backdrop-blur-md z-50 border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-2 text-xl font-bold w-40 h-40">
-              <Terminal className="w-6 h-6 text-emerald-400" />
-              <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                IAM_SOFTWARE_DEV
-              </span>
-            </div>
+      {/* ---------- Navigation ---------- */}
+      <nav className="fixed top-0 z-50 w-full border-b border-white/5 bg-[#07090f]/70 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <button onClick={() => go("home")} className="flex items-center gap-2 text-lg font-bold" aria-label="Home">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-400/10 ring-1 ring-emerald-400/30">
+              <Terminal className="h-4 w-4 text-emerald-400" />
+            </span>
+            <span className="font-mono text-sm tracking-wide text-gradient">sebastian.dev</span>
+          </button>
 
-            <div className="hidden md:flex space-x-8">
-              {["home", "about", "projects", "skills", "experience", "contact"].map((section) => (
-                <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className={`capitalize hover:text-emerald-400 transition-colors ${
-                    activeSection === section ? "text-emerald-400" : "text-gray-300"
-                  }`}>
-                  {section}
-                </button>
-              ))}
-            </div>
-            <button className="md:hidden" onClick={() => updateState({ mobileMenuOpen: !mobileMenuOpen })}>
-              {mobileMenuOpen ? <X /> : <Menu />}
-            </button>
+          <div className="hidden items-center gap-1 md:flex">
+            {NAV.map((id) => (
+              <button
+                key={id}
+                onClick={() => go(id)}
+                className={`relative rounded-lg px-3.5 py-2 text-sm capitalize transition-colors ${
+                  active === id ? "text-white" : "text-gray-400 hover:text-white"
+                }`}>
+                {id}
+                <span
+                  className={`absolute inset-x-3.5 -bottom-px h-px bg-gradient-to-r from-emerald-400 to-cyan-400 transition-opacity ${
+                    active === id ? "opacity-100" : "opacity-0"
+                  }`}
+                />
+              </button>
+            ))}
+            <a href={RESUME} download className="ml-3 rounded-lg border border-emerald-400/40 px-4 py-2 text-sm font-medium text-emerald-300 transition hover:bg-emerald-400/10">
+              Résumé
+            </a>
           </div>
+
+          <button
+            className="rounded-lg p-2 text-gray-300 hover:bg-white/5 md:hidden"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label="Toggle menu"
+            aria-expanded={menuOpen}>
+            {menuOpen ? <X /> : <Menu />}
+          </button>
         </div>
 
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-slate-900/95 backdrop-blur-md border-t border-slate-800">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              {["home", "about", "projects", "skills", "experience", "contact"].map((section) => (
-                <button
-                  key={section}
-                  onClick={() => scrollToSection(section)}
-                  className="block w-full text-left px-3 py-2 capitalize hover:bg-slate-800 rounded-md transition-colors">
-                  {section}
-                </button>
-              ))}
-            </div>
+        {menuOpen && (
+          <div className="border-t border-white/5 bg-[#07090f]/95 px-4 py-3 backdrop-blur-xl md:hidden">
+            {NAV.map((id) => (
+              <button
+                key={id}
+                onClick={() => go(id)}
+                className={`block w-full rounded-lg px-3 py-3 text-left capitalize ${
+                  active === id ? "bg-white/5 text-emerald-300" : "text-gray-300 hover:bg-white/5"
+                }`}>
+                {id}
+              </button>
+            ))}
           </div>
         )}
       </nav>
 
-      {/* Hero Section */}
-      <section id="home" className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <div className="mb-8">
-            <Code className="w-16 h-16 mx-auto text-emerald-400 animate-bounce" />
-          </div>
-          <h1 className="text-5xl md:text-7xl font-bold mb-4">
-            Hi, I'm{" "}
-            <span className="bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
-              Sebastian Mutuku
+      {/* ---------- Hero ---------- */}
+      <header id="home" className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 pt-24 pb-16 sm:px-6 lg:px-8">
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <div className="aurora aurora-1" />
+          <div className="aurora aurora-2" />
+          <div className="aurora aurora-3" />
+          <div className="bg-grid absolute inset-0" />
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-4xl text-center">
+          <Reveal>
+            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/5 px-4 py-1.5 text-sm text-emerald-300">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              Open to new opportunities
             </span>
-          </h1>
-          <div className="text-2xl md:text-4xl text-gray-300 mb-8 h-16 flex items-center justify-center">
-            <span className="mr-2">I'm a</span>
-            <span className="text-emerald-400 font-semibold border-r-2 border-emerald-400 pr-1">{displayText}</span>
-          </div>
-          <div className="text-[1.25rem] leading-relaxed text-gray-300 w-4xl mx-auto mb-12 space-y-6">
-            <h2 className="text-2xl font-semibold text-gray-300">Professional Summary</h2>
-            <p>
-              Senior Backend Engineer with <b>{years}+ years</b> of experience building high-volume banking, payment,
-              and enterprise backend systems. Strong expertise in Java, Spring Boot, Temenos T24, REST APIs, and
-              Kubernetes. Proven record of delivering production-grade financial systems, modernizing legacy platforms,
-              and deploying scalable services in regulated environments. Contributor to open-source: deployed a Java
-              artifact to Maven Central
+          </Reveal>
+
+          <Reveal delay={100}>
+            <h1 className="mt-8 text-5xl font-extrabold tracking-tight text-white sm:text-6xl md:text-7xl">
+              Hi, I'm <span className="text-gradient-animated">Sebastian Mutuku</span>
+            </h1>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <div className="mt-6 flex h-10 items-center justify-center font-mono text-lg text-gray-300 sm:text-2xl" aria-live="polite">
+              <span className="text-gray-500 mr-3">&gt;</span>
+              <span className="text-emerald-300">{role}</span>
+              <span className="caret" aria-hidden="true" />
+            </div>
+          </Reveal>
+
+          <Reveal delay={300}>
+            <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-gray-400">
+              Senior Backend Engineer with <b className="text-white">{years}+ years</b> building high-volume banking,
+              payment and enterprise systems. Expert in <b className="text-white">Java, Spring Boot, Temenos T24</b> and{" "}
+              <b className="text-white">Kubernetes</b> — shipping production-grade software in regulated environments.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="flex flex-wrap justify-center gap-4">
-            <button
-              onClick={() => scrollToSection("projects")}
-              className="px-8 py-4 bg-emerald-500 hover:bg-emerald-600 rounded-lg font-semibold transition-all hover:scale-105">
-              View My Work
+          <Reveal delay={400} className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <button onClick={() => go("projects")} className={btnPrimary}>
+              View my work
+              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </button>
-            <button
-              onClick={() => scrollToSection("contact")}
-              className="px-8 py-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg font-semibold transition-all hover:scale-105">
-              Get In Touch
+            <button onClick={() => go("contact")} className={btnGhost}>
+              Get in touch
             </button>
-          </div>
-        </div>
-      </section>
+            <a href={RESUME} download className={btnGhost}>
+              <DownloadCloud className="h-5 w-5" />
+              Download CV
+            </a>
+          </Reveal>
 
-      {/* About Section */}
-      <section id="about" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
-        <div className="max-w-6xl mx-auto relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
-            <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              About Me
-            </span>
-          </h2>
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-2xl font-bold text-emerald-400 mb-4">Software Developer and Solutions provider</h3>
-              <p className="text-gray-300 mb-4 leading-relaxed text-justify">
-                Senior Backend Engineer with{years}+ years of experience building high-volume banking, payment, and
-                enterprise backend systems. Strong expertise in Java, Spring Boot, Temenos T24, REST APIs, and
-                Kubernetes. Proven record of delivering production-grade financial systems, modernizing legacy
-                platforms, and deploying scalable services in regulated environments. Contributor to open-source:
-                deployed a Java artifact to Maven Central.
-              </p>
-              <p className="text-gray-300 mb-4 leading-relaxed text-justify">
-                My expertise spans from architecting scalable APIs, Android Applications and building Financial and
-                Health related solutions.
-              </p>
-              <p className="text-gray-300 leading-relaxed text-justify">
-                Currently a holders degree in Bachelor of Science, Elctronics major in computer engineering
-              </p>
-            </div>
-            <div className="space-y-4">
-              <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6">
-                <h4 className="text-xl font-bold text-emerald-400 mb-3">Quick Facts</h4>
-                <ul className="space-y-2 text-gray-300">
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    {years}+ years of software development experience
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    Android and Backend developer
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    Networking Developer with C++
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    Deployment & DevOps Enthusiast
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    Team Lead & Technical Mentor
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    HAPI and FHIR SDK Developer
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    Corebaking Applications Developer (T24/Temenos)
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                    Published artifacts to maven central and sonatype repositories
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          <Reveal delay={500} className="mx-auto mt-16 grid max-w-2xl grid-cols-2 gap-6 rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur sm:grid-cols-4">
+            <Stat end={years} suffix="+" label="Years experience" />
+            <Stat end={120000} suffix="+" label="Health workers reached" />
+            <Stat end={30} suffix="%" label="Faster transactions" />
+            <Stat end={projects.length} suffix="" label="Flagship projects" />
+          </Reveal>
         </div>
-      </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="relative py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center">
-            <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              Key Strategic Business Projects Completed
+        <button
+          onClick={() => go("about")}
+          className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs text-gray-500 transition hover:text-gray-300 sm:flex"
+          aria-label="Scroll to About">
+          <span className="relative h-9 w-5 rounded-full border border-gray-600">
+            <span className="absolute left-1/2 top-2 h-1.5 w-1 -translate-x-1/2 animate-bounce rounded-full bg-emerald-400" />
+          </span>
+        </button>
+      </header>
+
+      {/* ---------- Tech marquee ---------- */}
+      <div className="marquee relative overflow-hidden border-y border-white/5 bg-white/[0.02] py-5" aria-hidden="true">
+        <div className="marquee-track">
+          {[...MARQUEE, ...MARQUEE].map((t, i) => (
+            <span key={i} className="mx-6 flex items-center gap-12 whitespace-nowrap font-mono text-sm text-gray-500">
+              {t}
+              <span className="h-1 w-1 rounded-full bg-emerald-400/60" />
             </span>
-          </h2>
-          <p className="text-gray-400 text-center mb-12 text-lg">
-            I have vast experience building financial and health related software solutions. Here are some of my recent
-            projects that showcase my skills and expertise.
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-justify">
-            {projects.map((project, index) => (
-              <div
-                key={index}
-                className="group bg-gray-900/50 border border-gray-700 rounded-lg p-6 hover:border-emerald-500/50 transition-all hover:-translate-y-2">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="p-3 bg-emerald-500/10 rounded-lg text-emerald-400">{project.icon}</div>
-                  <span className="px-3 py-1 bg-gray-800 text-emerald-400 rounded-full text-xs">
-                    {project.category}
-                  </span>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-emerald-400 transition-colors">
-                  {project.name}
-                </h3>
-                <p className="text-gray-400 mb-4 text-sm leading-relaxed">{project.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tech.map((tech, i) => (
-                    <span key={i} className="px-2 py-1 bg-gray-800 text-gray-300 rounded text-xs">
-                      {tech}
-                    </span>
-                  ))}
+          ))}
+        </div>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#07090f] to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#07090f] to-transparent" />
+      </div>
+
+      {/* ---------- About ---------- */}
+      <section id="about" className="relative px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl">
+          <SectionHeading eyebrow="About" title="Engineering that moves money and saves lives" />
+          <div className="grid items-start gap-12 md:grid-cols-5">
+            <Reveal className="space-y-5 text-lg leading-relaxed text-gray-400 md:col-span-3">
+              <p>
+                I'm a <span className="text-white font-medium">software developer and solutions provider</span> with{" "}
+                {years}+ years of experience building high-volume banking, payment and enterprise backend systems. I
+                specialise in modernising legacy platforms and deploying scalable services in regulated environments.
+              </p>
+              <p>
+                My work spans architecting scalable APIs, building Android applications, and delivering financial and
+                health solutions — from card processing at a major regional bank to a FHIR-based app used by over
+                120,000 healthcare workers.
+              </p>
+              <p>
+                I've also published a Java artifact to <span className="text-white font-medium">Maven Central</span> and
+                contribute to open source.
+              </p>
+              <div className="flex items-start gap-4 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                <GraduationCap className="mt-0.5 h-6 w-6 shrink-0 text-emerald-400" />
+                <div>
+                  <div className="font-semibold text-white">B.Sc. Electronics — Computer Engineering</div>
+                  <div className="text-sm text-gray-500">Bachelor of Science degree holder</div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </Reveal>
 
-      {/* Skills Section */}
-      <section id="skills" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
-        <div className="max-w-7xl mx-auto relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
-            <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              Technical Skills
-            </span>
-          </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Object.entries(techStack).map(([category, skills], index) => (
-              <div
-                key={index}
-                className="bg-gray-900/50 border border-gray-700 rounded-lg p-6 hover:border-emerald-500/50 transition-all">
-                <h3 className="text-xl font-bold text-emerald-400 mb-4 capitalize flex items-center gap-2">
-                  {category === "android" && <Smartphone className="w-5 h-5" />}
-                  {category === "backend" && <Server className="w-5 h-5" />}
-                  {category === "database" && <Database className="w-5 h-5" />}
-                  {category === "tools" && <Terminal className="w-5 h-5" />}
-                  {category === "cloud" && <Layers className="w-5 h-5" />}
-                  {category === "specialization" && <Zap className="w-5 h-5" />}
-                  {category === "networking" && <Globe className="w-5 h-5" />}
-                  {category}
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {skills.map((skill, i) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1 bg-gray-800 text-gray-300 rounded-md text-sm hover:bg-emerald-500/20 hover:text-emerald-400 transition-all cursor-default">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Experience Section */}
-      <section id="experience" className="relative py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
-            <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              Work Experience
-            </span>
-          </h2>
-          <div className="space-y-8">
-            {experience.map((job, index) => (
-              <div
-                key={index}
-                className="bg-gray-900/50 border border-gray-700 rounded-lg p-6 hover:border-emerald-500/50 transition-all">
-                <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
-                  <div>
-                    <h3 className="text-2xl font-bold text-emerald-400 mb-2">{job.title}</h3>
-                    <p className="text-xl text-gray-300 mb-2">{job.company}</p>
-                    <p className="text-gray-400 italic">{job.description}</p>
-                  </div>
-                  <span className="text-emerald-400 font-semibold mt-2 md:mt-0">{job.period}</span>
-                </div>
-                <ul className="space-y-2">
-                  {job.achievements.map((achievement, i) => (
-                    <li key={i} className="flex gap-3 text-gray-300">
-                      <span className="text-emerald-400 mt-1">▹</span>
-                      <span>{achievement}</span>
+            <Reveal delay={150} className="md:col-span-2">
+              <SpotlightCard className="p-6">
+                <h3 className="mb-5 font-mono text-sm uppercase tracking-widest text-emerald-400">Quick facts</h3>
+                <ul className="space-y-3.5 text-gray-300">
+                  {[
+                    [Briefcase, `${years}+ years in software development`],
+                    [Terminal, "Android & backend developer"],
+                    [Terminal, "Networking developer with C++"],
+                    [Terminal, "Deployment & DevOps enthusiast"],
+                    [Users, "Team lead & technical mentor"],
+                    [Terminal, "HAPI FHIR SDK developer"],
+                    [Briefcase, "Core banking developer (Temenos T24)"],
+                    [Package, "Published to Maven Central & Sonatype"],
+                  ].map(([Icon, text], i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                      <span className="text-sm leading-snug">{text}</span>
                     </li>
                   ))}
                 </ul>
-              </div>
+              </SpotlightCard>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Projects ---------- */}
+      <section id="projects" className="relative px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading
+            eyebrow="Projects"
+            title="Strategic projects delivered"
+            subtitle="Financial and health platforms built for scale, security and real-world impact."
+          />
+
+          <Reveal className="mb-10 flex flex-wrap justify-center gap-2">
+            {FILTERS.map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`rounded-full border px-4 py-1.5 text-sm transition ${
+                  filter === f
+                    ? "border-emerald-400/60 bg-emerald-400/10 text-emerald-300"
+                    : "border-white/10 text-gray-400 hover:border-white/20 hover:text-white"
+                }`}>
+                {f}
+              </button>
+            ))}
+          </Reveal>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {visibleProjects.map((p, i) => {
+              const Icon = p.icon;
+              return (
+                <Reveal key={p.name} delay={(i % 3) * 100}>
+                  <SpotlightCard className="group flex h-full flex-col p-6 hover:-translate-y-1.5">
+                    <div className="mb-5 flex items-start justify-between">
+                      <div className="rounded-xl bg-emerald-400/10 p-3 text-emerald-400 ring-1 ring-emerald-400/20 transition group-hover:scale-110 group-hover:bg-emerald-400/20">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                      <div className="flex flex-wrap justify-end gap-1.5">
+                        {p.tags.map((t) => (
+                          <span key={t} className="rounded-full bg-white/5 px-2.5 py-0.5 text-[11px] text-gray-400">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <h3 className="mb-2 text-xl font-bold text-white transition-colors group-hover:text-emerald-300">
+                      {p.name}
+                    </h3>
+                    <p className="mb-5 flex-1 text-sm leading-relaxed text-gray-400">{p.description}</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {p.tech.map((t) => (
+                        <span key={t} className="rounded-md border border-white/5 bg-white/5 px-2 py-0.5 font-mono text-[11px] text-gray-300">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </SpotlightCard>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- Skills ---------- */}
+      <section id="skills" className="relative px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <SectionHeading eyebrow="Skills" title="Technical toolbox" subtitle="From the JVM to the network stack, and from mobile to cloud." />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {Object.entries(techStack).map(([category, { icon: Icon, items }], i) => (
+              <Reveal key={category} delay={(i % 3) * 100}>
+                <SpotlightCard className="h-full p-6">
+                  <h3 className="mb-4 flex items-center gap-2.5 text-lg font-bold capitalize text-white">
+                    <span className="rounded-lg bg-emerald-400/10 p-2 text-emerald-400">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    {category}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {items.map((s) => (
+                      <span
+                        key={s}
+                        className="cursor-default rounded-md border border-white/5 bg-white/5 px-2.5 py-1 text-sm text-gray-300 transition hover:-translate-y-0.5 hover:border-emerald-400/30 hover:bg-emerald-400/10 hover:text-emerald-300">
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </SpotlightCard>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/50">
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              Hire me for your next project!
-            </span>
-          </h2>
-          <p className="text-xl text-gray-300 mb-12">
-            Want quality software development services? Reach out to discuss your project requirements and how I can
-            help bring your ideas to life.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <a
-              href="mailto:sebastian.muthiani@gmail.com"
-              className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 px-8 py-4 rounded-lg font-semibold transition-all hover:scale-105">
-              <Mail className="w-5 h-5" />
-              sebastian.muthiani@gmail.com
-            </a>
-            <a
-              href="tel:+254727538818"
-              className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 border border-gray-700 px-8 py-4 rounded-lg font-semibold transition-all hover:scale-105">
-              <Phone className="w-5 h-5" />
-              +254 727 538 818
-            </a>
+      {/* ---------- Experience ---------- */}
+      <section id="experience" className="relative px-4 py-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl">
+          <SectionHeading eyebrow="Experience" title="Where I've worked" />
+          <div className="relative">
+            <div className="timeline-line absolute bottom-0 left-[11px] top-2 w-px md:left-[15px]" aria-hidden="true" />
+            <div className="space-y-10">
+              {experience.map((job) => (
+                <Reveal key={job.title + job.period} className="relative pl-10 md:pl-14">
+                  <span
+                    className={`absolute left-0 top-2 grid h-6 w-6 place-items-center rounded-full bg-[#07090f] ring-2 md:left-1 ${
+                      job.current ? "pulse-dot ring-emerald-400" : "ring-gray-600"
+                    }`}>
+                    <span className={`h-2 w-2 rounded-full ${job.current ? "bg-emerald-400" : "bg-gray-500"}`} />
+                  </span>
+                  <SpotlightCard className="p-6">
+                    <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold text-white">{job.title}</h3>
+                        <p className="font-medium text-emerald-300">{job.company}</p>
+                      </div>
+                      <span className="w-fit whitespace-nowrap rounded-full border border-white/10 bg-white/5 px-3 py-1 font-mono text-xs text-gray-300">
+                        {job.period}
+                      </span>
+                    </div>
+                    <p className="mb-4 text-sm italic text-gray-500">{job.description}</p>
+                    <ul className="space-y-2">
+                      {job.achievements.map((a) => (
+                        <li key={a} className="flex gap-3 text-sm leading-relaxed text-gray-300">
+                          <span className="mt-1 text-emerald-400">▹</span>
+                          <span>{a}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </SpotlightCard>
+                </Reveal>
+              ))}
+            </div>
           </div>
-          <div className="flex justify-center gap-6">
+        </div>
+      </section>
+
+      {/* ---------- Contact ---------- */}
+      <section id="contact" className="relative overflow-hidden px-4 py-28 sm:px-6 lg:px-8">
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+          <div className="aurora aurora-1 !top-auto !bottom-[-14rem] !left-[-6rem] opacity-20" />
+          <div className="aurora aurora-2 !top-auto !bottom-[-12rem] !right-[-6rem] opacity-20" />
+        </div>
+        <Reveal className="relative mx-auto max-w-3xl rounded-3xl border border-white/10 bg-white/[0.03] p-8 text-center backdrop-blur sm:p-14">
+          <p className="mb-3 font-mono text-sm uppercase tracking-widest text-emerald-400">Contact</p>
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-5xl">
+            Let's build something <span className="text-gradient-animated">great</span> together
+          </h2>
+          <p className="mx-auto mt-5 max-w-xl text-lg text-gray-400">
+            Looking for quality software engineering? Reach out to discuss your project and how I can help bring it to life.
+          </p>
+
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <a href={`mailto:${EMAIL}`} className={btnPrimary}>
+              <Mail className="h-5 w-5" />
+              Email me
+            </a>
+            <button onClick={copyEmail} className={btnGhost} aria-live="polite">
+              {copied ? <Check className="h-5 w-5 text-emerald-400" /> : <Copy className="h-5 w-5" />}
+              {copied ? "Copied!" : EMAIL}
+            </button>
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 text-sm">
+            <a href={`tel:${PHONE.replace(/\s/g, "")}`} className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-400 transition hover:bg-white/5 hover:text-white">
+              <Phone className="h-4 w-4" /> {PHONE}
+            </a>
             <a
               href="https://github.com/SebaMutuku"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg transition-all hover:scale-110">
-              <Github className="w-6 h-6" />
+              className="flex items-center gap-2 rounded-lg px-3 py-2 text-gray-400 transition hover:bg-white/5 hover:text-white">
+              <Github className="h-4 w-4" /> SebaMutuku
             </a>
-            <a
-              href="mailto:sebastian.muthiani@gmail.com"
-              className="p-4 bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg transition-all hover:scale-110">
-              <Mail className="w-6 h-6" />
-            </a>
+            <span className="flex items-center gap-2 px-3 py-2 text-gray-400">
+              <MapPin className="h-4 w-4" /> Nairobi, Kenya
+            </span>
           </div>
-          <div className="mt-8 flex items-center justify-center gap-2 text-gray-400">
-            <MapPin className="w-5 h-5" />
-            <span>Nairobi, Kenya</span>
-          </div>
-        </div>
+        </Reveal>
       </section>
 
-      {/* Footer */}
-      <footer className="relative py-8 px-4 sm:px-6 lg:px-8 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto text-center text-gray-400 relative z-10">
-          <p className="mb-2">Designed & Built by Sebastian Mutuku</p>
-          <p className="text-sm">© {new Date().getFullYear()} All rights reserved.</p>
-        </div>
+      {/* ---------- Footer ---------- */}
+      <footer className="border-t border-white/5 px-4 py-8 text-center text-sm text-gray-500">
+        <p>Designed & built by Sebastian Mutuku</p>
+        <p className="mt-1">© {new Date().getFullYear()} All rights reserved.</p>
       </footer>
+
+      {/* back to top */}
+      <button
+        onClick={() => go("home")}
+        aria-label="Back to top"
+        className={`fixed bottom-6 right-6 z-50 grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-gray-900/80 text-emerald-300 shadow-lg backdrop-blur transition-all hover:-translate-y-1 hover:border-emerald-400/40 ${
+          progress > 0.08 ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
+        }`}>
+        <ArrowUp className="h-5 w-5" />
+      </button>
     </div>
   );
 }
